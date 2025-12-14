@@ -1,5 +1,89 @@
 <template>
-    <div v-if="loadedTheme" class="container mt-3">
+    <!-- Top Left: Logo -->
+    <div class="top-left-header">
+        <span class="logo-wrapper" @click="showImageCropUploadMethod">
+            <img :src="logoURL" alt class="logo me-2" :class="logoClass" />
+        </span>
+    </div>
+
+    <!-- Top Right: Overall Status -->
+    <div class="top-right-status" :class="{ 'status-ok': allUp, 'status-warning': partialDown, 'status-danger': allDown, 'status-maintenance': isMaintenance, 'has-maintenance-details': isMaintenance && maintenanceList.length > 0 }">
+        <template v-if="Object.keys($root.publicMonitorList).length === 0 && loadedData">
+            <font-awesome-icon icon="question-circle" />
+            <span>{{ $t("No Services") }}</span>
+        </template>
+        <template v-else-if="allUp">
+            <font-awesome-icon icon="check-circle" />
+            <span>{{ $t("All Systems Operational") }}</span>
+        </template>
+        <template v-else-if="partialDown">
+            <font-awesome-icon icon="exclamation-circle" />
+            <span>{{ $t("Partially Degraded Service") }}</span>
+        </template>
+        <template v-else-if="allDown">
+            <font-awesome-icon icon="times-circle" />
+            <span>{{ $t("Degraded Service") }}</span>
+        </template>
+        <template v-else-if="isMaintenance">
+            <font-awesome-icon icon="wrench" />
+            <span>{{ $t("maintenanceStatus-under-maintenance") }}</span>
+            <!-- Maintenance details shown on hover -->
+            <div class="maintenance-details">
+                <div v-for="maintenance in maintenanceList" :key="'detail-' + maintenance.id" class="maintenance-item">
+                    <strong>{{ maintenance.title }}</strong>
+                    <!-- eslint-disable-next-line vue/no-v-html-->
+                    <div class="maintenance-description" v-html="maintenanceHTML(maintenance.description)"></div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Background with dot pattern and animated eyes visible through dots -->
+    <div class="animated-background">
+        <!-- Layer 1: Base gray dots (always visible) -->
+        <div class="dot-grid-base"></div>
+
+        <!-- Visible Orbit Path (for testing) -->
+        <div class="orbit-path"></div>
+
+        <!-- Layer 2: Eyes and colored glows masked through dots -->
+        <div class="dot-mask-layer">
+            <!-- Bottom Right: Title with mask effect -->
+            <div class="masked-title">{{ config.title }}</div>
+
+            <div class="eyes-container" :class="{ 'eyes-alert': hasDownMonitor, 'eyes-maintenance': isMaintenance }">
+                <div class="eye">
+                    <div class="eyeball" :style="eyeLookStyle">
+                        <div class="pupil"></div>
+                    </div>
+                </div>
+                <div class="eye">
+                    <div class="eyeball" :style="eyeLookStyle">
+                        <div class="pupil"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colored glows that follow card positions -->
+            <div class="orbital-glows" :class="{ 'paused': isHoveringCard }">
+                <template v-for="(group, groupIndex) in $root.publicGroupList" :key="'glow-group-' + groupIndex">
+                    <div
+                        v-for="(monitor, monitorIndex) in group.monitorList"
+                        :key="'glow-' + monitor.id"
+                        class="card-glow"
+                        :class="{
+                            'glow-up': getMonitorStatus(monitor.id) === 1,
+                            'glow-down': getMonitorStatus(monitor.id) === 0,
+                            'glow-maintenance': getMonitorStatus(monitor.id) === 3
+                        }"
+                        :style="{ animationDelay: getGlowDelay(groupIndex, monitorIndex) }"
+                    ></div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="loadedTheme" class="container mt-3 status-page-content">
         <!-- Sidebar for edit mode -->
         <div v-if="enableEditMode" class="sidebar" data-testid="edit-sidebar">
             <div class="sidebar-body">
@@ -274,11 +358,11 @@
                 </template>
             </div>
 
-            <!-- Maintenance -->
+            <!-- Maintenance - Hidden, shown in top-right status on hover -->
             <template v-if="maintenanceList.length > 0">
                 <div
                     v-for="maintenance in maintenanceList" :key="maintenance.id"
-                    class="shadow-box alert mb-4 p-3 bg-maintenance mt-4 position-relative" role="alert"
+                    class="shadow-box alert mb-4 p-3 bg-maintenance mt-4 position-relative maintenance-card-hidden" role="alert"
                 >
                     <h4 class="alert-heading">{{ maintenance.title }}</h4>
                     <!-- eslint-disable-next-line vue/no-v-html-->
@@ -334,7 +418,9 @@
                     👀 {{ $t("statusPageNothing") }}
                 </div>
 
-                <PublicGroupList :edit-mode="enableEditMode" :show-tags="config.showTags" :show-certificate-expiry="config.showCertificateExpiry" :show-only-last-heartbeat="config.showOnlyLastHeartbeat" />
+                <div class="orbital-container" :class="{ 'paused': isHoveringCard }">
+                    <PublicGroupList :edit-mode="enableEditMode" :show-tags="config.showTags" :show-certificate-expiry="config.showCertificateExpiry" :show-only-last-heartbeat="config.showOnlyLastHeartbeat" />
+                </div>
             </div>
 
             <footer class="mt-5 mb-4">
@@ -347,6 +433,9 @@
 
                 <p v-if="config.showPoweredBy" data-testid="powered-by">
                     {{ $t("Powered by") }} <a target="_blank" rel="noopener noreferrer" href="https://github.com/louislam/uptime-kuma">{{ $t("Uptime Kuma" ) }}</a>
+                </p>
+                <p class="custom-ui-credit">
+                    Custom UI by <a target="_blank" rel="noopener noreferrer" href="https://github.com/GavaOfficial">GavaOfficial</a> (Unofficial)
                 </p>
 
                 <div class="refresh-info mb-2">
@@ -457,6 +546,10 @@ export default {
             updateCountdown: null,
             updateCountdownText: null,
             loading: true,
+            eyeTrackInterval: null,
+            eyeLookX: 0,
+            eyeLookY: 0,
+            isHoveringCard: false,
         };
     },
     computed: {
@@ -548,21 +641,28 @@ export default {
 
             let status = STATUS_PAGE_ALL_UP;
             let hasUp = false;
+            let hasMaintenance = false;
+            let hasDown = false;
 
             for (let id in this.$root.publicLastHeartbeatList) {
                 let beat = this.$root.publicLastHeartbeatList[id];
 
                 if (beat.status === MAINTENANCE) {
-                    return STATUS_PAGE_MAINTENANCE;
+                    hasMaintenance = true;
                 } else if (beat.status === UP) {
                     hasUp = true;
                 } else {
-                    status = STATUS_PAGE_PARTIAL_DOWN;
+                    hasDown = true;
                 }
             }
 
-            if (! hasUp) {
+            // Priority: All Down > Partial Down > Maintenance > All Up
+            if (!hasUp && hasDown) {
                 status = STATUS_PAGE_ALL_DOWN;
+            } else if (hasDown) {
+                status = STATUS_PAGE_PARTIAL_DOWN;
+            } else if (hasMaintenance) {
+                status = STATUS_PAGE_MAINTENANCE;
             }
 
             return status;
@@ -610,6 +710,57 @@ export default {
 
         lastUpdateTimeDisplay() {
             return this.$root.datetime(this.lastUpdateTime);
+        },
+
+        /**
+         * Check if any monitor is down
+         * @returns {boolean} True if at least one monitor is down
+         */
+        hasDownMonitor() {
+            for (let group of this.$root.publicGroupList) {
+                for (let monitor of group.monitorList) {
+                    let heartbeats = this.$root.heartbeatList[monitor.id] ?? [];
+                    let lastHeartbeat = heartbeats[heartbeats.length - 1];
+                    if (lastHeartbeat?.status === 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        },
+
+        /**
+         * Get the index of the first down monitor for eye direction
+         * @returns {number} Index of first down monitor, -1 if none
+         */
+        firstDownMonitorIndex() {
+            let totalIndex = 0;
+            for (let group of this.$root.publicGroupList) {
+                for (let monitor of group.monitorList) {
+                    let heartbeats = this.$root.heartbeatList[monitor.id] ?? [];
+                    let lastHeartbeat = heartbeats[heartbeats.length - 1];
+                    if (lastHeartbeat?.status === 0) {
+                        return totalIndex;
+                    }
+                    totalIndex++;
+                }
+            }
+            return -1;
+        },
+
+        /**
+         * Calculate eye look direction based on down monitor position
+         * @returns {object} CSS style object for eyeball transform
+         */
+        eyeLookStyle() {
+            if (!this.hasDownMonitor) {
+                return {}; // Default animation
+            }
+
+            return {
+                animation: 'none',
+                transform: `translate(${this.eyeLookX}px, ${this.eyeLookY}px)`
+            };
         }
     },
     watch: {
@@ -699,12 +850,24 @@ export default {
         // Special handle for dev
         this.baseURL = getResBaseURL();
     },
+    beforeUnmount() {
+        // Clean up eye tracking interval
+        if (this.eyeTrackInterval) {
+            clearInterval(this.eyeTrackInterval);
+        }
+    },
     async mounted() {
         this.slug = this.overrideSlug || this.$route.params.slug;
 
         if (!this.slug) {
             this.slug = "default";
         }
+
+        // Track down card position and update eye direction
+        this.eyeTrackInterval = setInterval(() => {
+            this.updateEyeDirection();
+            this.checkCardHover();
+        }, 50);
 
         this.getData().then((res) => {
             this.config = res.data.config;
@@ -1066,12 +1229,574 @@ export default {
             }
         },
 
+        /**
+         * Check if any card is being hovered
+         * @returns {void}
+         */
+        checkCardHover() {
+            const hoveredCard = document.querySelector(".orbital-container .item:hover");
+            this.isHoveringCard = hoveredCard !== null;
+        },
+
+        /**
+         * Update eye direction based on down card's actual DOM position
+         * @returns {void}
+         */
+        updateEyeDirection() {
+            if (!this.hasDownMonitor) {
+                this.eyeLookX = 0;
+                this.eyeLookY = 0;
+                return;
+            }
+
+            // Find the down card element
+            const downCard = document.querySelector(".item.monitor-down");
+            if (!downCard) {
+                return;
+            }
+
+            // Get card position
+            const cardRect = downCard.getBoundingClientRect();
+            const cardCenterX = cardRect.left + cardRect.width / 2;
+            const cardCenterY = cardRect.top + cardRect.height / 2;
+
+            // Get center of screen (where eyes are)
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            // Calculate direction vector
+            const dirX = cardCenterX - centerX;
+            const dirY = cardCenterY - centerY;
+
+            // Normalize and scale to eye movement range
+            const distance = Math.sqrt(dirX * dirX + dirY * dirY);
+            if (distance > 0) {
+                this.eyeLookX = (dirX / distance) * 35;
+                this.eyeLookY = (dirY / distance) * 20;
+            }
+        },
+
+        /**
+         * Get monitor status from heartbeat list
+         * @param {number} monitorId Monitor ID
+         * @returns {number|null} Status (1=up, 0=down, null=unknown)
+         */
+        getMonitorStatus(monitorId) {
+            let heartbeats = this.$root.heartbeatList[monitorId] ?? [];
+            let lastHeartbeat = heartbeats[heartbeats.length - 1];
+            return lastHeartbeat?.status ?? null;
+        },
+
+        /**
+         * Get animation delay for orbital glow based on monitor index
+         * @param {number} groupIndex Group index
+         * @param {number} monitorIndex Monitor index within group
+         * @returns {string} CSS animation delay
+         */
+        getGlowDelay(groupIndex, monitorIndex) {
+            // Calculate total index across all groups
+            let totalIndex = 0;
+            for (let i = 0; i < groupIndex; i++) {
+                totalIndex += this.$root.publicGroupList[i]?.monitorList?.length || 0;
+            }
+            totalIndex += monitorIndex;
+
+            // Same delays as the cards (60s animation)
+            const delays = [ 0, -30, -15, -45, -7.5, -37.5, -22.5, -52.5 ];
+            const delay = delays[totalIndex % delays.length];
+            return delay + "s";
+        },
+
     }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../assets/vars.scss";
+
+/* CSS Custom Property for smooth angle animation */
+@property --orbit-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+/* Top Left Header - Logo & Title */
+.top-left-header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.top-left-header .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+/* Bottom Left: Title with mask effect */
+.masked-title {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    font-size: clamp(60px, 10vw, 150px);
+    font-weight: 800;
+    color: #ffffff;
+    text-align: left;
+    line-height: 0.9;
+    max-width: 50vw;
+    word-wrap: break-word;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+/* Top Right Status */
+.top-right-status {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    left: auto !important;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    width: auto;
+    white-space: nowrap;
+}
+
+.top-right-status.status-ok {
+    color: #22c55e;
+}
+
+.top-right-status.status-warning {
+    color: #f59e0b;
+}
+
+.top-right-status.status-danger {
+    color: #ef4444;
+}
+
+.top-right-status.status-maintenance {
+    color: #3b82f6;
+}
+
+/* Maintenance details - hidden by default, shown on hover */
+.top-right-status .maintenance-details {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px 20px;
+    min-width: 300px;
+    max-width: 400px;
+    text-align: left;
+    white-space: normal;
+}
+
+.top-right-status.has-maintenance-details {
+    cursor: pointer;
+    position: relative;
+}
+
+.top-right-status.has-maintenance-details:hover .maintenance-details {
+    display: block;
+}
+
+.maintenance-details .maintenance-item {
+    margin-bottom: 10px;
+}
+
+.maintenance-details .maintenance-item:last-child {
+    margin-bottom: 0;
+}
+
+.maintenance-details .maintenance-item strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #3b82f6;
+}
+
+.maintenance-details .maintenance-description {
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+/* Hide the big maintenance card in the center */
+.maintenance-card-hidden {
+    display: none !important;
+}
+
+/* Animated Background: Dots visible, colored by shapes behind */
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #000000;
+    overflow: hidden;
+}
+
+/* Base layer: Gray dots (always visible) */
+.dot-grid-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-image: radial-gradient(circle, #3a3a3a 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+}
+
+/* Orbit path - transparent */
+.orbit-path {
+    display: none;
+}
+
+/* Dot mask layer - Shows content only through dots */
+.dot-mask-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    -webkit-mask-image: radial-gradient(circle, black 1.5px, transparent 1.5px);
+    mask-image: radial-gradient(circle, black 1.5px, transparent 1.5px);
+    -webkit-mask-size: 10px 10px;
+    mask-size: 10px 10px;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+    pointer-events: none;
+}
+
+/* Orbital glows container */
+.orbital-glows {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+}
+
+/* Individual card glow - follows same orbit as cards */
+.card-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    height: 200px;
+    border-radius: 50%;
+    --orbit-x: clamp(200px, 40vw, 600px);
+    --orbit-y: clamp(175px, 35vh, 400px);
+    animation: orbit-angle-anim 60s linear infinite;
+    transform: translate(
+        calc(-50% + cos(var(--orbit-angle)) * var(--orbit-x)),
+        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y))
+    );
+    pointer-events: none;
+}
+
+/* Light gray card shape for UP monitors */
+.card-glow.glow-up {
+    width: clamp(200px, 25vw, 400px);
+    height: clamp(80px, 10vw, 130px);
+    border-radius: clamp(10px, 1.2vw, 16px);
+    background-color: #9ca3af;
+}
+
+/* Red card shape for DOWN monitors */
+.card-glow.glow-down {
+    width: clamp(200px, 25vw, 400px);
+    height: clamp(80px, 10vw, 130px);
+    border-radius: clamp(10px, 1.2vw, 16px);
+    background-color: #ef4444;
+}
+
+/* Blue card shape for MAINTENANCE monitors */
+.card-glow.glow-maintenance {
+    width: clamp(200px, 25vw, 400px);
+    height: clamp(80px, 10vw, 130px);
+    border-radius: clamp(10px, 1.2vw, 16px);
+    background-color: #3b82f6;
+}
+
+/* Pause glow animations when hovering cards */
+.orbital-glows.paused .card-glow {
+    animation-play-state: paused;
+}
+
+/* Animated Eyes */
+.eyes-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 60px;
+}
+
+.eye {
+    width: 200px;
+    height: 320px;
+    background: #ff8c00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 0 60px rgba(255, 140, 0, 0.4),
+        inset 0 -20px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Red eyes when server is down */
+.eyes-alert .eye {
+    background: #ef4444;
+    box-shadow:
+        0 0 60px rgba(239, 68, 68, 0.6),
+        inset 0 -20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Blue eyes when in maintenance */
+.eyes-maintenance .eye {
+    background: #3b82f6;
+    box-shadow:
+        0 0 60px rgba(59, 130, 246, 0.6),
+        inset 0 -20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.eyeball {
+    width: 100px;
+    height: 140px;
+    background: #1a1a2e;
+    border-radius: 50%;
+    position: relative;
+    animation: look-around 3s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.pupil {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+/* Eye looking animation - smooth continuous movement */
+@keyframes look-around {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-35px);
+    }
+    50% {
+        transform: translateX(0);
+    }
+    75% {
+        transform: translateX(35px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.status-page-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Orbital container for cards moving around eyes */
+.orbital-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.orbital-container :deep(.shadow-box.monitor-list) {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    min-height: auto !important;
+}
+
+.orbital-container :deep(.mb-5) {
+    margin-bottom: 0 !important;
+}
+
+.orbital-container :deep(.group-title) {
+    display: none;
+}
+
+.orbital-container :deep(.monitor-list) {
+    position: relative;
+}
+
+.orbital-container :deep(.item) {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    pointer-events: auto;
+    background-color: #1c2333 !important;
+    border-radius: clamp(10px, 1.2vw, 16px);
+    padding: clamp(12px, 1.5vw, 25px) clamp(15px, 2vw, 30px);
+    width: clamp(200px, 25vw, 400px);
+    /* Responsive elliptical orbit using viewport units */
+    --orbit-x: clamp(200px, 40vw, 600px);
+    --orbit-y: clamp(175px, 35vh, 400px);
+    animation: orbit-angle-anim 60s linear infinite;
+    transform: translate(
+        calc(-50% + cos(var(--orbit-angle)) * var(--orbit-x)),
+        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y))
+    ) !important;
+}
+
+/* Card layout: info on top, heartbeat bar below */
+.orbital-container :deep(.item .row) {
+    display: flex;
+    flex-direction: column !important;
+}
+
+.orbital-container :deep(.item .col-6) {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+    padding: 0 !important;
+}
+
+/* Info section on top */
+.orbital-container :deep(.item .col-6:first-child) {
+    margin-bottom: 10px;
+}
+
+/* Info section with percentage and name */
+.orbital-container :deep(.item .info) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.orbital-container :deep(.item .item-name) {
+    color: #fff;
+    font-weight: 600;
+    font-size: clamp(14px, 1.3vw, 20px);
+    margin: 0;
+}
+
+.orbital-container :deep(.item .badge) {
+    font-size: clamp(11px, 1vw, 15px) !important;
+    padding: clamp(4px, 0.5vw, 8px) clamp(6px, 0.8vw, 12px) !important;
+}
+
+.orbital-container :deep(.item .small-padding) {
+    padding: 0 !important;
+}
+
+/* Heartbeat bar container - fit inside card */
+.orbital-container :deep(.item .col-6:last-child) {
+    width: 100% !important;
+    overflow: hidden;
+}
+
+.orbital-container :deep(.item .wrap) {
+    width: 100% !important;
+    overflow: hidden !important;
+    padding: 2px 0 !important;
+    direction: rtl !important; /* This makes overflow hide from left instead of right */
+}
+
+.orbital-container :deep(.item .hp-bar-big) {
+    width: fit-content !important;
+    max-width: none !important;
+    overflow: visible !important;
+    direction: ltr !important; /* Reset direction for proper content display */
+}
+
+.orbital-container :deep(.item .heartbeat-canvas) {
+    display: block !important;
+    height: clamp(18px, 2vw, 32px) !important;
+}
+
+/* Hide the time labels in orbital cards */
+.orbital-container :deep(.item .word) {
+    display: none !important;
+}
+
+/* Extra info section - hide in orbital cards for cleaner look */
+.orbital-container :deep(.item .extra-info) {
+    display: none !important;
+}
+
+/* Card UP - transparent background, light gray dots visible behind */
+.orbital-container :deep(.item.monitor-up) {
+    background-color: transparent !important;
+}
+
+/* Card DOWN - transparent background, red dots visible behind */
+.orbital-container :deep(.item.monitor-down) {
+    background-color: transparent !important;
+}
+
+/* Card MAINTENANCE - transparent background, blue dots visible behind */
+.orbital-container :deep(.item.monitor-maintenance) {
+    background-color: transparent !important;
+}
+
+/* Pause ALL card animations when hovering any card */
+.orbital-container.paused :deep(.item) {
+    animation-play-state: paused !important;
+}
+
+.orbital-container :deep(.item:hover) {
+    z-index: 1000 !important;
+}
+
+/* Animate the angle custom property */
+@keyframes orbit-angle-anim {
+    from { --orbit-angle: 0deg; }
+    to { --orbit-angle: 360deg; }
+}
+
+/* Distribute cards at maximum distance from each other on orbit */
+.orbital-container :deep(.item:nth-child(1)) { animation-delay: 0s; }
+.orbital-container :deep(.item:nth-child(2)) { animation-delay: -30s; }
+.orbital-container :deep(.item:nth-child(3)) { animation-delay: -15s; }
+.orbital-container :deep(.item:nth-child(4)) { animation-delay: -45s; }
+.orbital-container :deep(.item:nth-child(5)) { animation-delay: -7.5s; }
+.orbital-container :deep(.item:nth-child(6)) { animation-delay: -37.5s; }
+.orbital-container :deep(.item:nth-child(7)) { animation-delay: -22.5s; }
+.orbital-container :deep(.item:nth-child(8)) { animation-delay: -52.5s; }
+
 
 .overall-status {
     font-weight: bold;
@@ -1114,11 +1839,11 @@ h1 {
     top: 0;
     width: 300px;
     height: 100vh;
-
-    border-right: 1px solid #ededed;
+    background-color: $dark-header-bg;
+    border-right: 1px solid $dark-border-color;
 
     .danger-zone {
-        border-top: 1px solid #ededed;
+        border-top: 1px solid $dark-border-color;
         padding-top: 15px;
     }
 
@@ -1130,33 +1855,51 @@ h1 {
     }
 
     .sidebar-footer {
-        border-top: 1px solid #ededed;
-        border-right: 1px solid #ededed;
+        border-top: 1px solid $dark-border-color;
+        border-right: 1px solid $dark-border-color;
         padding: 10px;
         width: 300px;
         height: 70px;
         position: fixed;
         left: 0;
         bottom: 0;
-        background-color: white;
+        background-color: $dark-header-bg;
         display: flex;
         align-items: center;
     }
 }
 
 footer {
-    text-align: center;
-    font-size: 14px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-align: right;
+    font-size: 12px;
+    z-index: 200;
+    color: #888;
+}
+
+.custom-ui-credit {
+    font-size: 12px;
+    margin-top: 2px;
+    color: #888;
+}
+
+.custom-ui-credit a {
+    color: #888;
 }
 
 .description span {
     min-width: 50px;
 }
 
+/* Hide original title and status in main content (moved to fixed headers) */
 .title-flex {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: none;
+}
+
+.overall-status {
+    display: none;
 }
 
 .logo-wrapper {
@@ -1175,7 +1918,8 @@ footer {
         bottom: 6px;
         font-size: 20px;
         left: -14px;
-        background-color: white;
+        background-color: #1a1a2e;
+        color: #fff;
         padding: 5px;
         border-radius: 10px;
         cursor: pointer;
@@ -1216,7 +1960,7 @@ footer {
     vertical-align: middle;
 }
 
-.dark .shadow-box {
+.shadow-box {
     background-color: #0d1117;
 }
 
@@ -1235,22 +1979,6 @@ footer {
     }
 }
 
-.dark {
-    .sidebar {
-        background-color: $dark-header-bg;
-        border-right-color: $dark-border-color;
-
-        .danger-zone {
-            border-top-color: $dark-border-color;
-        }
-
-        .sidebar-footer {
-            border-right-color: $dark-border-color;
-            border-top-color: $dark-border-color;
-            background-color: $dark-header-bg;
-        }
-    }
-}
 
 .domain-name-list {
     li {

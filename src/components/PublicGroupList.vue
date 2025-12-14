@@ -40,7 +40,7 @@
                         item-key="id"
                     >
                         <template #item="monitor">
-                            <div class="item" data-testid="monitor">
+                            <div class="item" :class="{ 'monitor-down': isMonitorDown(monitor.element.id), 'monitor-up': isMonitorUp(monitor.element.id), 'monitor-maintenance': isMonitorMaintenance(monitor.element.id) }" data-testid="monitor">
                                 <div class="row">
                                     <div class="col-6 small-padding">
                                         <div class="info">
@@ -209,6 +209,39 @@ export default {
             let heartbeats = this.$root.heartbeatList[monitorId] ?? [];
             let lastHeartbeat = heartbeats[heartbeats.length - 1];
             return lastHeartbeat?.status;
+        },
+
+        /**
+         * Check if monitor is down (status = 0)
+         * @param {number} monitorId Id of the monitor to check
+         * @returns {boolean} True if monitor is down
+         */
+        isMonitorDown(monitorId) {
+            let heartbeats = this.$root.heartbeatList[monitorId] ?? [];
+            let lastHeartbeat = heartbeats[heartbeats.length - 1];
+            return lastHeartbeat?.status === 0;
+        },
+
+        /**
+         * Check if monitor is up (status = 1)
+         * @param {number} monitorId Id of the monitor to check
+         * @returns {boolean} True if monitor is up
+         */
+        isMonitorUp(monitorId) {
+            let heartbeats = this.$root.heartbeatList[monitorId] ?? [];
+            let lastHeartbeat = heartbeats[heartbeats.length - 1];
+            return lastHeartbeat?.status === 1;
+        },
+
+        /**
+         * Check if monitor is in maintenance (status = 3)
+         * @param {number} monitorId Id of the monitor to check
+         * @returns {boolean} True if monitor is in maintenance
+         */
+        isMonitorMaintenance(monitorId) {
+            let heartbeats = this.$root.heartbeatList[monitorId] ?? [];
+            let lastHeartbeat = heartbeats[heartbeats.length - 1];
+            return lastHeartbeat?.status === 3;
         },
 
         /**
