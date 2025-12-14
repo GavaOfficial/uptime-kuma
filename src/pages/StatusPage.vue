@@ -1,9 +1,10 @@
 <template>
-    <!-- Top Left: Logo -->
+    <!-- Top Left: Logo & Title -->
     <div class="top-left-header">
         <span class="logo-wrapper" @click="showImageCropUploadMethod">
             <img :src="logoURL" alt class="logo me-2" :class="logoClass" />
         </span>
+        <span class="header-title">{{ config.title }}</span>
     </div>
 
     <!-- Top Right: Overall Status -->
@@ -421,6 +422,34 @@
                 <div class="orbital-container" :class="{ 'paused': isHoveringCard }">
                     <PublicGroupList :edit-mode="enableEditMode" :show-tags="config.showTags" :show-certificate-expiry="config.showCertificateExpiry" :show-only-last-heartbeat="config.showOnlyLastHeartbeat" />
                 </div>
+
+                <!-- Card separate per tablet e mobile -->
+                <div class="responsive-cards">
+                    <template v-for="(group, groupIndex) in $root.publicGroupList" :key="'resp-group-' + groupIndex">
+                        <div
+                            v-for="monitor in group.monitorList"
+                            :key="'resp-' + monitor.id"
+                            class="responsive-card"
+                            :class="{
+                                'card-up': getMonitorStatus(monitor.id) === 1,
+                                'card-down': getMonitorStatus(monitor.id) === 0,
+                                'card-maintenance': getMonitorStatus(monitor.id) === 3
+                            }"
+                        >
+                            <div class="card-row">
+                                <div class="card-info-section">
+                                    <div class="card-info">
+                                        <Uptime :monitor="monitor" type="24" :pill="true" />
+                                        <span class="card-name">{{ monitor.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-heartbeat-section">
+                                    <HeartbeatBar size="mid" :monitor-id="monitor.id" />
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
             </div>
 
             <footer class="mt-5 mb-4">
@@ -474,6 +503,8 @@ import DOMPurify from "dompurify";
 import Confirm from "../components/Confirm.vue";
 import PublicGroupList from "../components/PublicGroupList.vue";
 import MaintenanceTime from "../components/MaintenanceTime.vue";
+import HeartbeatBar from "../components/HeartbeatBar.vue";
+import Uptime from "../components/Uptime.vue";
 import { getResBaseURL } from "../util-frontend";
 import { STATUS_PAGE_ALL_DOWN, STATUS_PAGE_ALL_UP, STATUS_PAGE_MAINTENANCE, STATUS_PAGE_PARTIAL_DOWN, UP, MAINTENANCE } from "../util.ts";
 import Tag from "../components/Tag.vue";
@@ -499,6 +530,8 @@ export default {
         Confirm,
         PrismEditor,
         MaintenanceTime,
+        HeartbeatBar,
+        Uptime,
         Tag,
         VueMultiselect
     },
@@ -1338,6 +1371,13 @@ export default {
     border-radius: 8px;
 }
 
+.top-left-header .header-title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    display: none; /* Hidden on desktop, shown on mobile */
+}
+
 /* Bottom Left: Title with mask effect */
 .masked-title {
     position: fixed;
@@ -1976,6 +2016,316 @@ footer {
 
     .overall-status {
         font-size: 20px;
+    }
+}
+
+/* Responsive cards - nascosto su desktop */
+.responsive-cards {
+    display: none;
+}
+
+/* Tablet/iPad version */
+@media (min-width: 769px) and (max-width: 1200px) {
+    /* Eyes smaller, positioned top left */
+    .eyes-container {
+        top: 80px !important;
+        bottom: auto !important;
+        left: 50px !important;
+        right: auto !important;
+        transform: none !important;
+        gap: 40px !important;
+    }
+
+    .eyes-container .eye {
+        width: 120px;
+        height: 200px;
+    }
+
+    .eyes-container .eyeball {
+        width: 60px;
+        height: 85px;
+    }
+
+    .eyes-container .pupil {
+        width: 22px;
+        height: 22px;
+        top: 12px;
+    }
+
+    /* Hide orbital glows and orbital container on tablet */
+    .orbital-glows {
+        display: none !important;
+    }
+
+    .orbital-container {
+        display: none !important;
+    }
+
+    /* Show responsive cards on tablet */
+    .responsive-cards {
+        display: block !important;
+        position: fixed !important;
+        top: 80px !important;
+        right: 20px !important;
+        width: 300px !important;
+        max-height: calc(100vh - 180px) !important;
+        overflow-y: auto !important;
+        z-index: 150 !important;
+    }
+
+    .responsive-card {
+        padding: 15px 20px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        background-color: transparent;
+        position: relative;
+    }
+
+    .responsive-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle, #9ca3af 1.5px, transparent 1.5px);
+        background-size: 10px 10px;
+        background-attachment: fixed;
+        border-radius: 12px;
+        z-index: -1;
+    }
+
+    .responsive-card.card-up::before {
+        background-image: radial-gradient(circle, #9ca3af 1.5px, transparent 1.5px);
+    }
+
+    .responsive-card.card-down::before {
+        background-image: radial-gradient(circle, #ef4444 1.5px, transparent 1.5px);
+    }
+
+    .responsive-card.card-maintenance::before {
+        background-image: radial-gradient(circle, #3b82f6 1.5px, transparent 1.5px);
+    }
+
+    .responsive-card .card-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .responsive-card .card-info-section {
+        margin-bottom: 10px;
+    }
+
+    .responsive-card .card-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .responsive-card .card-name {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .responsive-card .card-heartbeat-section {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .responsive-card :deep(.wrap) {
+        width: 100% !important;
+        overflow: hidden !important;
+        padding: 2px 0 !important;
+        direction: rtl !important;
+    }
+
+    .responsive-card :deep(.hp-bar-big) {
+        width: fit-content !important;
+        max-width: none !important;
+        overflow: visible !important;
+        direction: ltr !important;
+    }
+
+    .responsive-card :deep(.heartbeat-canvas) {
+        display: block !important;
+        height: 24px !important;
+    }
+
+    .responsive-card :deep(.word) {
+        display: none !important;
+    }
+}
+
+/* Mobile version - stacked cards, no animation */
+@media (max-width: 768px) {
+    /* Hide eyes on mobile */
+    .eyes-container {
+        display: none !important;
+    }
+
+    /* Hide orbital glows on mobile */
+    .orbital-glows {
+        display: none !important;
+    }
+
+    /* Hide masked title on mobile */
+    .masked-title {
+        display: none !important;
+    }
+
+    /* Hide orbital container on mobile - use responsive cards */
+    .orbital-container {
+        display: none !important;
+    }
+
+    /* Top left logo & title on mobile */
+    .top-left-header {
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        right: auto !important;
+        z-index: 200;
+    }
+
+    .top-left-header .logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Show title on mobile */
+    .top-left-header .header-title {
+        display: inline !important;
+        font-size: 16px;
+    }
+
+    /* Top right status - adjust for mobile */
+    .top-right-status {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        left: auto !important;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    /* Show responsive cards on mobile */
+    .responsive-cards {
+        display: block !important;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 70px 15px 150px 15px;
+        z-index: 10;
+    }
+
+    .responsive-card {
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        background-color: transparent;
+        position: relative;
+    }
+
+    .responsive-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle, #9ca3af 1.5px, transparent 1.5px);
+        background-size: 10px 10px;
+        background-attachment: fixed;
+        border-radius: 12px;
+        z-index: -1;
+    }
+
+    .responsive-card.card-up::before {
+        background-image: radial-gradient(circle, #9ca3af 1.5px, transparent 1.5px);
+    }
+
+    .responsive-card.card-down::before {
+        background-image: radial-gradient(circle, #ef4444 1.5px, transparent 1.5px);
+    }
+
+    .responsive-card.card-maintenance::before {
+        background-image: radial-gradient(circle, #3b82f6 1.5px, transparent 1.5px);
+    }
+
+    .responsive-card .card-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .responsive-card .card-info-section {
+        margin-bottom: 10px;
+    }
+
+    .responsive-card .card-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .responsive-card .card-name {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .responsive-card .card-heartbeat-section {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .responsive-card :deep(.wrap) {
+        width: 100% !important;
+        overflow: hidden !important;
+        padding: 2px 0 !important;
+        direction: rtl !important;
+    }
+
+    .responsive-card :deep(.hp-bar-big) {
+        width: fit-content !important;
+        max-width: none !important;
+        overflow: visible !important;
+        direction: ltr !important;
+    }
+
+    .responsive-card :deep(.heartbeat-canvas) {
+        display: block !important;
+        height: 24px !important;
+    }
+
+    .responsive-card :deep(.word) {
+        display: none !important;
+    }
+
+    /* Footer - fixed at bottom on mobile */
+    footer {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: rgba(0, 0, 0, 0.9) !important;
+        backdrop-filter: blur(10px);
+        padding: 15px !important;
+        text-align: center !important;
+        margin: 0 !important;
+    }
+
+    .refresh-info {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .refresh-info > div {
+        display: inline;
     }
 }
 
