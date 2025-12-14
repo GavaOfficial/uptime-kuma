@@ -1,10 +1,22 @@
 <template>
     <!-- Top Left: Logo & Title -->
-    <div class="top-left-header">
+    <div class="top-left-header" :class="{ 'edit-mode-hidden': enableEditMode && !isClosingEditMode, 'edit-mode-showing': isClosingEditMode }">
         <span class="logo-wrapper" @click="showImageCropUploadMethod">
             <img :src="logoURL" alt class="logo me-2" :class="logoClass" />
         </span>
         <span class="header-title">{{ config.title }}</span>
+
+        <!-- Admin buttons next to logo -->
+        <div v-if="hasToken && !enableEditMode" class="header-buttons">
+            <button class="btn btn-primary" data-testid="edit-button" @click="edit">
+                <font-awesome-icon icon="edit" />
+                {{ $t("Edit Status Page") }}
+            </button>
+            <a href="/manage-status-page" class="btn btn-primary">
+                <font-awesome-icon icon="tachometer-alt" />
+                {{ $t("Go to Dashboard") }}
+            </a>
+        </div>
     </div>
 
     <!-- Top Right: Overall Status -->
@@ -86,7 +98,7 @@
 
     <div v-if="loadedTheme" class="container mt-3 status-page-content">
         <!-- Sidebar for edit mode -->
-        <div v-if="enableEditMode" class="sidebar" data-testid="edit-sidebar">
+        <div v-if="enableEditMode" class="sidebar" :class="{ 'sidebar-closing': isClosingEditMode }" data-testid="edit-sidebar">
             <div class="sidebar-body">
                 <div class="my-3">
                     <label for="slug" class="form-label">{{ $t("Slug") }}</label>
@@ -99,6 +111,18 @@
                 <div class="my-3">
                     <label for="title" class="form-label">{{ $t("Title") }}</label>
                     <input id="title" v-model="config.title" type="text" class="form-control">
+                </div>
+
+                <!-- Logo/Image -->
+                <div class="my-3">
+                    <label class="form-label">Logo / Immagine</label>
+                    <div class="logo-edit-section">
+                        <img :src="logoURL" alt="Logo" class="logo-preview" :class="{ 'logo-animate-in': enableEditMode && !isClosingEditMode, 'logo-animate-out': isClosingEditMode }" />
+                        <button type="button" class="btn btn-primary btn-sm" @click="showImageCropUpload = true">
+                            <font-awesome-icon icon="upload" class="me-1" />
+                            Modifica Immagine
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Description -->
@@ -219,52 +243,25 @@
 
         <!-- Main Status Page -->
         <div :class="{ edit: enableEditMode}" class="main">
-            <!-- Logo & Title -->
-            <h1 class="mb-4 title-flex">
-                <!-- Logo -->
-                <span class="logo-wrapper" @click="showImageCropUploadMethod">
-                    <img :src="logoURL" alt class="logo me-2" :class="logoClass" />
-                    <font-awesome-icon v-if="enableEditMode" class="icon-upload" icon="upload" />
-                </span>
+            <!-- Uploader -->
+            <ImageCropUpload
+                v-model="showImageCropUpload"
+                field="img"
+                :width="128"
+                :height="128"
+                :langType="$i18n.locale"
+                img-format="png"
+                :noCircle="true"
+                :noSquare="false"
+                @crop-success="cropSuccess"
+            />
 
-                <!-- Uploader -->
-                <!--    url="/api/status-page/upload-logo" -->
-                <ImageCropUpload
-                    v-model="showImageCropUpload"
-                    field="img"
-                    :width="128"
-                    :height="128"
-                    :langType="$i18n.locale"
-                    img-format="png"
-                    :noCircle="true"
-                    :noSquare="false"
-                    @crop-success="cropSuccess"
-                />
-
-                <!-- Title -->
-                <Editable v-model="config.title" tag="span" :contenteditable="editMode" :noNL="true" />
-            </h1>
-
-            <!-- Admin functions -->
-            <div v-if="hasToken" class="mb-2">
-                <div v-if="!enableEditMode">
-                    <button class="btn btn-primary mb-2 me-2" data-testid="edit-button" @click="edit">
-                        <font-awesome-icon icon="edit" />
-                        {{ $t("Edit Status Page") }}
-                    </button>
-
-                    <a href="/manage-status-page" class="btn btn-primary mb-2">
-                        <font-awesome-icon icon="tachometer-alt" />
-                        {{ $t("Go to Dashboard") }}
-                    </a>
-                </div>
-
-                <div v-else>
-                    <button class="btn btn-primary btn-add-group me-2" data-testid="create-incident-button" @click="createIncident">
-                        <font-awesome-icon icon="bullhorn" />
-                        {{ $t("Create Incident") }}
-                    </button>
-                </div>
+            <!-- Admin functions - only show Create Incident in edit mode -->
+            <div v-if="hasToken && enableEditMode" class="mb-2">
+                <button class="btn btn-primary btn-add-group me-2" data-testid="create-incident-button" @click="createIncident">
+                    <font-awesome-icon icon="bullhorn" />
+                    {{ $t("Create Incident") }}
+                </button>
             </div>
 
             <!-- Incident -->
@@ -583,6 +580,7 @@ export default {
             eyeLookX: 0,
             eyeLookY: 0,
             isHoveringCard: false,
+            isClosingEditMode: false,
         };
     },
     computed: {
@@ -1046,26 +1044,20 @@ export default {
          */
         save() {
             this.loading = true;
-            let startTime = new Date();
             this.config.slug = this.config.slug.trim().toLowerCase();
 
             this.$root.getSocket().emit("saveStatusPage", this.slug, this.config, this.imgDataUrl, this.$root.publicGroupList, (res) => {
                 if (res.ok) {
-                    this.enableEditMode = false;
+                    // Trigger closing animations
+                    this.isClosingEditMode = true;
                     this.$root.publicGroupList = res.publicGroupList;
 
-                    // Add some delay, so that the side menu animation would be better
-                    let endTime = new Date();
-                    let time = 100 - (endTime - startTime) / 1000;
-
-                    if (time < 0) {
-                        time = 0;
-                    }
-
+                    // Wait for animations to complete before redirect
                     setTimeout(() => {
+                        this.enableEditMode = false;
                         this.loading = false;
                         location.href = "/status/" + this.config.slug;
-                    }, time);
+                    }, 600);
 
                 } else {
                     this.loading = false;
@@ -1378,6 +1370,38 @@ export default {
     display: none; /* Hidden on desktop, shown on mobile */
 }
 
+.top-left-header .header-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: 15px;
+}
+
+/* Hide top-left logo when in edit mode with transition */
+.top-left-header {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.top-left-header.edit-mode-hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.top-left-header.edit-mode-showing {
+    animation: header-appear 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes header-appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* Bottom Left: Title with mask effect */
 .masked-title {
     position: fixed;
@@ -1389,7 +1413,7 @@ export default {
     text-align: left;
     line-height: 0.9;
     max-width: 50vw;
-    word-wrap: break-word;
+    word-spacing: 100vw;
     text-transform: uppercase;
     letter-spacing: -0.02em;
 }
@@ -1873,6 +1897,32 @@ h1 {
     }
 }
 
+@keyframes sidebar-slide-in {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes sidebar-slide-out {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+.sidebar.sidebar-closing {
+    animation: sidebar-slide-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 .sidebar {
     position: fixed;
     left: 0;
@@ -1881,6 +1931,7 @@ h1 {
     height: 100vh;
     background-color: $dark-header-bg;
     border-right: 1px solid $dark-border-color;
+    animation: sidebar-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 
     .danger-zone {
         border-top: 1px solid $dark-border-color;
@@ -2330,6 +2381,69 @@ footer {
 }
 
 
+.logo-edit-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    position: relative;
+    overflow: visible;
+}
+
+.logo-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid rgba(59, 130, 246, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-preview.logo-animate-in {
+    animation: logo-fly-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes logo-fly-in {
+    0% {
+        transform: translate(-280px, -120px) scale(0.5);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes logo-fly-out {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-280px, -120px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.logo-preview.logo-animate-out {
+    animation: logo-fly-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.logo-preview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
 .domain-name-list {
     li {
         display: flex;
@@ -2360,4 +2474,15 @@ footer {
     opacity: 0.7;
 }
 
+</style>
+
+<style lang="scss">
+/* Global styles for image crop upload modal (not scoped) */
+.vue-image-crop-upload {
+    z-index: 10000 !important;
+}
+
+.vicp-wrap {
+    z-index: 10001 !important;
+}
 </style>
