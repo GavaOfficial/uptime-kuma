@@ -89,7 +89,9 @@
             </div>
         </template>
     </Draggable>
-    <MonitorSettingDialog ref="monitorSettingDialog" />
+    <Teleport to="body">
+        <MonitorSettingDialog ref="monitorSettingDialog" />
+    </Teleport>
 </template>
 
 <script>

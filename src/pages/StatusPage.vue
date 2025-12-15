@@ -20,7 +20,7 @@
     </div>
 
     <!-- Top Right: Overall Status -->
-    <div class="top-right-status" :class="{ 'status-ok': allUp, 'status-warning': partialDown, 'status-danger': allDown, 'status-maintenance': isMaintenance, 'has-maintenance-details': isMaintenance && maintenanceList.length > 0 }">
+    <div class="top-right-status" :class="{ 'status-ok': allUp, 'status-warning': partialDown, 'status-danger': allDown, 'status-maintenance': isMaintenance, 'has-maintenance-details': isMaintenance && maintenanceList.length > 0, 'edit-mode-hidden': enableEditMode && !isClosingEditMode, 'edit-mode-showing': isClosingEditMode }">
         <template v-if="Object.keys($root.publicMonitorList).length === 0 && loadedData">
             <font-awesome-icon icon="question-circle" />
             <span>{{ $t("No Services") }}</span>
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Background with dot pattern and animated eyes visible through dots -->
-    <div class="animated-background">
+    <div class="animated-background" :class="{ 'edit-mode': enableEditMode && !isClosingEditMode, 'edit-mode-entering': isEnteringEditMode, 'edit-mode-exiting': isClosingEditMode }">
         <!-- Layer 1: Base gray dots (always visible) -->
         <div class="dot-grid-base"></div>
 
@@ -242,7 +242,7 @@
         </div>
 
         <!-- Main Status Page -->
-        <div :class="{ edit: enableEditMode}" class="main">
+        <div :class="{ edit: enableEditMode, closing: isClosingEditMode }" class="main">
             <!-- Uploader -->
             <ImageCropUpload
                 v-model="showImageCropUpload"
@@ -416,15 +416,15 @@
                     👀 {{ $t("statusPageNothing") }}
                 </div>
 
-                <div class="orbital-container" :class="{ 'paused': isHoveringCard }">
+                <div class="orbital-container" :class="{ 'paused': isHoveringCard, 'edit-mode': enableEditMode && !isClosingEditMode, 'edit-mode-entering': isEnteringEditMode, 'edit-mode-exiting': isClosingEditMode }">
                     <PublicGroupList :edit-mode="enableEditMode" :show-tags="config.showTags" :show-certificate-expiry="config.showCertificateExpiry" :show-only-last-heartbeat="config.showOnlyLastHeartbeat" />
                 </div>
 
                 <!-- Card separate per tablet e mobile -->
-                <div class="responsive-cards">
+                <div class="responsive-cards" :class="{ 'edit-mode': enableEditMode && !isClosingEditMode, 'edit-mode-exiting': isClosingEditMode }">
                     <template v-for="(group, groupIndex) in $root.publicGroupList" :key="'resp-group-' + groupIndex">
                         <div
-                            v-for="monitor in group.monitorList"
+                            v-for="(monitor, monitorIndex) in group.monitorList"
                             :key="'resp-' + monitor.id"
                             class="responsive-card"
                             :class="{
@@ -436,6 +436,14 @@
                             <div class="card-row">
                                 <div class="card-info-section">
                                     <div class="card-info">
+                                        <!-- Edit mode buttons -->
+                                        <font-awesome-icon v-if="enableEditMode" icon="times" class="action remove me-2" @click="removeMonitor(groupIndex, monitorIndex)" />
+                                        <font-awesome-icon
+                                            v-if="enableEditMode"
+                                            icon="cog"
+                                            class="action settings me-2"
+                                            @click="openMonitorSettings(groupIndex, monitorIndex)"
+                                        />
                                         <Uptime :monitor="monitor" type="24" :pill="true" />
                                         <span class="card-name">{{ monitor.name }}</span>
                                     </div>
@@ -475,6 +483,10 @@
             {{ $t("deleteStatusPageMsg") }}
         </Confirm>
 
+        <Teleport to="body">
+            <MonitorSettingDialog ref="monitorSettingDialog" />
+        </Teleport>
+
         <component is="style" v-if="config.customCSS" type="text/css">
             {{ config.customCSS }}
         </component>
@@ -506,6 +518,7 @@ import { getResBaseURL } from "../util-frontend";
 import { STATUS_PAGE_ALL_DOWN, STATUS_PAGE_ALL_UP, STATUS_PAGE_MAINTENANCE, STATUS_PAGE_PARTIAL_DOWN, UP, MAINTENANCE } from "../util.ts";
 import Tag from "../components/Tag.vue";
 import VueMultiselect from "vue-multiselect";
+import MonitorSettingDialog from "../components/MonitorSettingDialog.vue";
 
 const toast = useToast();
 dayjs.extend(duration);
@@ -530,7 +543,8 @@ export default {
         HeartbeatBar,
         Uptime,
         Tag,
-        VueMultiselect
+        VueMultiselect,
+        MonitorSettingDialog
     },
 
     // Leave Page for vue route change
@@ -581,6 +595,7 @@ export default {
             eyeLookY: 0,
             isHoveringCard: false,
             isClosingEditMode: false,
+            isEnteringEditMode: false,
         };
     },
     computed: {
@@ -788,10 +803,26 @@ export default {
                 return {}; // Default animation
             }
 
+            // On tablet (769px - 1200px), keep the normal animation even when servers are down
+            // The red color is applied via CSS .eyes-alert class
+            if (this.isTablet) {
+                return {}; // Keep default animation on tablet
+            }
+
             return {
                 animation: 'none',
                 transform: `translate(${this.eyeLookX}px, ${this.eyeLookY}px)`
             };
+        },
+
+        /**
+         * Check if current viewport is tablet size
+         * @returns {boolean} True if tablet viewport
+         */
+        isTablet() {
+            if (typeof window === 'undefined') return false;
+            const width = window.innerWidth;
+            return width >= 769 && width <= 1200;
         }
     },
     watch: {
@@ -1030,11 +1061,18 @@ export default {
         edit() {
             if (this.hasToken) {
                 this.$root.initSocketIO(true);
-                this.enableEditMode = true;
-                this.clickedEditButton = true;
 
-                // Try to fix #1658
-                this.loadedData = true;
+                // Start entering animation
+                this.isEnteringEditMode = true;
+
+                // Wait for orbital to slide out, then enable edit mode
+                setTimeout(() => {
+                    this.enableEditMode = true;
+                    this.clickedEditButton = true;
+                    this.isEnteringEditMode = false;
+                    // Try to fix #1658
+                    this.loadedData = true;
+                }, 500);
             }
         },
 
@@ -1048,9 +1086,13 @@ export default {
 
             this.$root.getSocket().emit("saveStatusPage", this.slug, this.config, this.imgDataUrl, this.$root.publicGroupList, (res) => {
                 if (res.ok) {
+                    this.$root.publicGroupList = res.publicGroupList;
+
+                    // Prepare exit animation with correct orbital positions
+                    this.prepareExitAnimation();
+
                     // Trigger closing animations
                     this.isClosingEditMode = true;
-                    this.$root.publicGroupList = res.publicGroupList;
 
                     // Wait for animations to complete before redirect
                     setTimeout(() => {
@@ -1063,6 +1105,31 @@ export default {
                     this.loading = false;
                     toast.error(res.msg);
                 }
+            });
+        },
+
+        /**
+         * Prepare exit animation by setting correct orbital positions for each card and glow
+         * This ensures cards rise from their correct orbital positions
+         * @returns {void}
+         */
+        prepareExitAnimation() {
+            // Orbital angles for each card (distributed around the orbit)
+            // These match the normal orbit distribution
+            const angles = [ 0, 180, 90, 270, 45, 225, 135, 315 ];
+
+            // Set --orbit-angle for cards - this positions them at their correct orbital location
+            const cards = document.querySelectorAll(".orbital-container .item");
+            cards.forEach((card, index) => {
+                const angle = angles[index % angles.length];
+                card.style.setProperty("--orbit-angle", `${angle}deg`);
+            });
+
+            // Set --orbit-angle for glows
+            const glows = document.querySelectorAll(".card-glow");
+            glows.forEach((glow, index) => {
+                const angle = angles[index % angles.length];
+                glow.style.setProperty("--orbit-angle", `${angle}deg`);
             });
         },
 
@@ -1332,6 +1399,28 @@ export default {
             return delay + "s";
         },
 
+        /**
+         * Remove a monitor from a group (for responsive cards)
+         * @param {number} groupIndex Index of the group
+         * @param {number} monitorIndex Index of the monitor within the group
+         * @returns {void}
+         */
+        removeMonitor(groupIndex, monitorIndex) {
+            this.$root.publicGroupList[groupIndex].monitorList.splice(monitorIndex, 1);
+        },
+
+        /**
+         * Open monitor settings dialog (for responsive cards)
+         * @param {number} groupIndex Index of the group
+         * @param {number} monitorIndex Index of the monitor within the group
+         * @returns {void}
+         */
+        openMonitorSettings(groupIndex, monitorIndex) {
+            const group = { element: this.$root.publicGroupList[groupIndex], index: groupIndex };
+            const monitor = { element: this.$root.publicGroupList[groupIndex].monitorList[monitorIndex], index: monitorIndex };
+            this.$refs.monitorSettingDialog.show(group, monitor);
+        },
+
     }
 };
 </script>
@@ -1416,6 +1505,11 @@ export default {
     word-spacing: 100vw;
     text-transform: uppercase;
     letter-spacing: -0.02em;
+    transition: left 0.3s ease;
+}
+
+.animated-background.edit-mode .masked-title {
+    left: 330px;
 }
 
 /* Top Right Status */
@@ -1515,6 +1609,11 @@ export default {
     z-index: -1;
     background-color: #000000;
     overflow: hidden;
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+.animated-background.edit-mode .eyes-container {
+    left: calc(50% + 150px);
 }
 
 /* Base layer: Gray dots (always visible) */
@@ -1571,13 +1670,43 @@ export default {
     border-radius: 50%;
     --orbit-x: clamp(200px, 40vw, 600px);
     --orbit-y: clamp(175px, 35vh, 400px);
+    --slide-y: 0vh;
     animation: orbit-angle-anim 60s linear infinite;
     transform: translate(
         calc(-50% + cos(var(--orbit-angle)) * var(--orbit-x)),
-        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y))
+        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y) + var(--slide-y))
     );
     pointer-events: none;
+    transition: --slide-y 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s ease;
 }
+
+.animated-background.edit-mode-entering .card-glow {
+    --slide-y: 100vh !important;
+    opacity: 0 !important;
+}
+
+.animated-background.edit-mode .card-glow {
+    --slide-y: 100vh;
+    opacity: 0;
+}
+
+/* Animation for glows rising from bottom when exiting edit mode */
+/* NOTE: Don't animate opacity here - glows should be visible immediately at their orbital positions */
+@keyframes glows-rise-from-bottom {
+    from {
+        --slide-y: 100vh;
+    }
+    to {
+        --slide-y: 0vh;
+    }
+}
+
+.animated-background.edit-mode-exiting .card-glow {
+    /* Only rise animation - orbit angle is set via JavaScript inline style */
+    animation: glows-rise-from-bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+/* Animation delays removed - orbit angle is now set via JavaScript inline style */
 
 /* Light gray card shape for UP monitors */
 .card-glow.glow-up {
@@ -1705,28 +1834,54 @@ export default {
     height: 100px;
     pointer-events: none;
     z-index: 5;
+    transition: left 0.3s ease;
 }
 
-.orbital-container :deep(.shadow-box.monitor-list) {
+.orbital-container.edit-mode {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    height: auto;
+    width: 100%;
+    max-height: none;
+    overflow-y: visible;
+    pointer-events: auto;
+}
+
+/* CSS custom property for slide animation */
+@property --slide-y {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0vh;
+}
+
+/* Animation for orbital elements entering/exiting edit mode */
+.orbital-container.edit-mode-entering :deep(.item) {
+    --slide-y: 100vh !important;
+    opacity: 0 !important;
+}
+
+.orbital-container:not(.edit-mode) :deep(.shadow-box.monitor-list) {
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
     min-height: auto !important;
 }
 
-.orbital-container :deep(.mb-5) {
+.orbital-container:not(.edit-mode) :deep(.mb-5) {
     margin-bottom: 0 !important;
 }
 
-.orbital-container :deep(.group-title) {
+.orbital-container:not(.edit-mode) :deep(.group-title) {
     display: none;
 }
 
-.orbital-container :deep(.monitor-list) {
+.orbital-container:not(.edit-mode) :deep(.monitor-list) {
     position: relative;
 }
 
-.orbital-container :deep(.item) {
+.orbital-container:not(.edit-mode) :deep(.item) {
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;
@@ -1738,20 +1893,30 @@ export default {
     /* Responsive elliptical orbit using viewport units */
     --orbit-x: clamp(200px, 40vw, 600px);
     --orbit-y: clamp(175px, 35vh, 400px);
+    --slide-y: 0vh;
     animation: orbit-angle-anim 60s linear infinite;
     transform: translate(
         calc(-50% + cos(var(--orbit-angle)) * var(--orbit-x)),
-        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y))
+        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y) + var(--slide-y))
     ) !important;
+    transition: --slide-y 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s ease;
+}
+
+.orbital-container.edit-mode :deep(.item) {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    animation: none !important;
 }
 
 /* Card layout: info on top, heartbeat bar below */
-.orbital-container :deep(.item .row) {
+.orbital-container:not(.edit-mode) :deep(.item .row) {
     display: flex;
     flex-direction: column !important;
 }
 
-.orbital-container :deep(.item .col-6) {
+.orbital-container:not(.edit-mode) :deep(.item .col-6) {
     width: 100% !important;
     max-width: 100% !important;
     flex: none !important;
@@ -1759,90 +1924,122 @@ export default {
 }
 
 /* Info section on top */
-.orbital-container :deep(.item .col-6:first-child) {
+.orbital-container:not(.edit-mode) :deep(.item .col-6:first-child) {
     margin-bottom: 10px;
 }
 
 /* Info section with percentage and name */
-.orbital-container :deep(.item .info) {
+.orbital-container:not(.edit-mode) :deep(.item .info) {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.orbital-container :deep(.item .item-name) {
+.orbital-container:not(.edit-mode) :deep(.item .item-name) {
     color: #fff;
     font-weight: 600;
     font-size: clamp(14px, 1.3vw, 20px);
     margin: 0;
 }
 
-.orbital-container :deep(.item .badge) {
+.orbital-container:not(.edit-mode) :deep(.item .badge) {
     font-size: clamp(11px, 1vw, 15px) !important;
     padding: clamp(4px, 0.5vw, 8px) clamp(6px, 0.8vw, 12px) !important;
 }
 
-.orbital-container :deep(.item .small-padding) {
+.orbital-container:not(.edit-mode) :deep(.item .small-padding) {
     padding: 0 !important;
 }
 
 /* Heartbeat bar container - fit inside card */
-.orbital-container :deep(.item .col-6:last-child) {
+.orbital-container:not(.edit-mode) :deep(.item .col-6:last-child) {
     width: 100% !important;
     overflow: hidden;
 }
 
-.orbital-container :deep(.item .wrap) {
+.orbital-container:not(.edit-mode) :deep(.item .wrap) {
     width: 100% !important;
     overflow: hidden !important;
     padding: 2px 0 !important;
     direction: rtl !important; /* This makes overflow hide from left instead of right */
 }
 
-.orbital-container :deep(.item .hp-bar-big) {
+.orbital-container:not(.edit-mode) :deep(.item .hp-bar-big) {
     width: fit-content !important;
     max-width: none !important;
     overflow: visible !important;
     direction: ltr !important; /* Reset direction for proper content display */
 }
 
-.orbital-container :deep(.item .heartbeat-canvas) {
+.orbital-container:not(.edit-mode) :deep(.item .heartbeat-canvas) {
     display: block !important;
     height: clamp(18px, 2vw, 32px) !important;
 }
 
 /* Hide the time labels in orbital cards */
-.orbital-container :deep(.item .word) {
+.orbital-container:not(.edit-mode) :deep(.item .word) {
     display: none !important;
 }
 
 /* Extra info section - hide in orbital cards for cleaner look */
-.orbital-container :deep(.item .extra-info) {
+.orbital-container:not(.edit-mode) :deep(.item .extra-info) {
     display: none !important;
 }
 
 /* Card UP - transparent background, light gray dots visible behind */
-.orbital-container :deep(.item.monitor-up) {
+.orbital-container:not(.edit-mode) :deep(.item.monitor-up) {
     background-color: transparent !important;
 }
 
 /* Card DOWN - transparent background, red dots visible behind */
-.orbital-container :deep(.item.monitor-down) {
+.orbital-container:not(.edit-mode) :deep(.item.monitor-down) {
     background-color: transparent !important;
 }
 
 /* Card MAINTENANCE - transparent background, blue dots visible behind */
-.orbital-container :deep(.item.monitor-maintenance) {
+.orbital-container:not(.edit-mode) :deep(.item.monitor-maintenance) {
     background-color: transparent !important;
 }
 
 /* Pause ALL card animations when hovering any card */
-.orbital-container.paused :deep(.item) {
+.orbital-container.paused:not(.edit-mode) :deep(.item) {
     animation-play-state: paused !important;
 }
 
-.orbital-container :deep(.item:hover) {
+.orbital-container:not(.edit-mode) :deep(.item:hover) {
     z-index: 1000 !important;
+}
+
+/* Animation for cards rising from bottom when exiting edit mode */
+/* NOTE: Don't animate opacity here - cards should be visible immediately at their orbital positions */
+@keyframes cards-rise-from-bottom {
+    from {
+        --slide-y: 100vh;
+    }
+    to {
+        --slide-y: 0vh;
+    }
+}
+
+/* IMPORTANT: This rule must come AFTER :not(.edit-mode) rules to override them */
+.orbital-container.edit-mode-exiting :deep(.item) {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    pointer-events: auto;
+    background-color: #1c2333 !important;
+    border-radius: clamp(10px, 1.2vw, 16px);
+    padding: clamp(12px, 1.5vw, 25px) clamp(15px, 2vw, 30px);
+    width: clamp(200px, 25vw, 400px);
+    --orbit-x: clamp(200px, 40vw, 600px);
+    --orbit-y: clamp(175px, 35vh, 400px);
+    --slide-y: 0vh;
+    transform: translate(
+        calc(-50% + cos(var(--orbit-angle)) * var(--orbit-x)),
+        calc(-50% + sin(var(--orbit-angle)) * var(--orbit-y) + var(--slide-y))
+    ) !important;
+    /* Only rise animation - orbit angle is set via JavaScript inline style */
+    animation: cards-rise-from-bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
 }
 
 /* Animate the angle custom property */
@@ -1852,14 +2049,16 @@ export default {
 }
 
 /* Distribute cards at maximum distance from each other on orbit */
-.orbital-container :deep(.item:nth-child(1)) { animation-delay: 0s; }
-.orbital-container :deep(.item:nth-child(2)) { animation-delay: -30s; }
-.orbital-container :deep(.item:nth-child(3)) { animation-delay: -15s; }
-.orbital-container :deep(.item:nth-child(4)) { animation-delay: -45s; }
-.orbital-container :deep(.item:nth-child(5)) { animation-delay: -7.5s; }
-.orbital-container :deep(.item:nth-child(6)) { animation-delay: -37.5s; }
-.orbital-container :deep(.item:nth-child(7)) { animation-delay: -22.5s; }
-.orbital-container :deep(.item:nth-child(8)) { animation-delay: -52.5s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(1)) { animation-delay: 0s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(2)) { animation-delay: -30s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(3)) { animation-delay: -15s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(4)) { animation-delay: -45s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(5)) { animation-delay: -7.5s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(6)) { animation-delay: -37.5s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(7)) { animation-delay: -22.5s; }
+.orbital-container:not(.edit-mode) :deep(.item:nth-child(8)) { animation-delay: -52.5s; }
+
+/* Animation delays for exiting edit mode removed - orbit angle is now set via JavaScript inline style */
 
 
 .overall-status {
@@ -2173,6 +2372,24 @@ footer {
         gap: 10px;
     }
 
+    .responsive-card .card-info .action {
+        cursor: pointer;
+        font-size: 14px;
+        transition: transform 0.2s ease;
+    }
+
+    .responsive-card .card-info .action:hover {
+        transform: scale(1.2);
+    }
+
+    .responsive-card .card-info .action.remove {
+        color: $danger;
+    }
+
+    .responsive-card .card-info .action.settings {
+        color: $primary;
+    }
+
     .responsive-card .card-name {
         color: #fff;
         font-size: 16px;
@@ -2205,6 +2422,179 @@ footer {
 
     .responsive-card :deep(.word) {
         display: none !important;
+    }
+
+    /* ============================================
+       TABLET EDIT MODE - Original Uptime Kuma Style
+       Restore EXACTLY the original layout when editing
+       ============================================ */
+
+    /* Hide ALL custom UI elements in edit mode */
+    .top-left-header.edit-mode-hidden,
+    .top-right-status.edit-mode-hidden,
+    .animated-background.edit-mode,
+    .responsive-cards.edit-mode {
+        display: none !important;
+    }
+
+    /* Show orbital-container in edit mode (displays normal list cards) */
+    .orbital-container.edit-mode {
+        display: block !important;
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Reset all orbital card styles in edit mode */
+    .orbital-container.edit-mode :deep(.item) {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        animation: none !important;
+        width: auto !important;
+        background-color: transparent !important;
+        border-radius: 0 !important;
+        padding: 10px 20px !important;
+    }
+
+    .orbital-container.edit-mode :deep(.row) {
+        flex-direction: row !important;
+    }
+
+    .orbital-container.edit-mode :deep(.col-6) {
+        width: 50% !important;
+        flex: 0 0 50% !important;
+    }
+
+    /* === RESTORE ORIGINAL UI ELEMENTS === */
+
+    /* Title with logo - original style */
+    .main.edit .title-flex {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    /* Overall status box - original style */
+    .main.edit .overall-status {
+        display: block !important;
+        font-weight: bold !important;
+        font-size: 25px !important;
+    }
+
+    /* Group titles - show in edit mode */
+    .orbital-container.edit-mode :deep(.group-title) {
+        display: flex !important;
+    }
+
+    /* Shadow boxes - original style (no background override, let theme apply) */
+    .orbital-container.edit-mode :deep(.shadow-box.monitor-list) {
+        box-shadow: none !important;
+        border-radius: 10px !important;
+        min-height: 46px !important;
+    }
+
+    /* Description */
+    .main.edit .description {
+        display: block !important;
+    }
+
+    /* Footer - original style */
+    .main.edit footer {
+        display: block !important;
+        position: relative !important;
+        text-align: center !important;
+        font-size: 14px !important;
+    }
+
+    /* Incident box */
+    .main.edit .incident {
+        display: block !important;
+    }
+
+    /* Maintenance cards */
+    .main.edit .maintenance-card-hidden {
+        display: block !important;
+    }
+
+    /* === ORIGINAL PAGE LAYOUT === */
+    .main.edit {
+        transition: all ease-in-out 0.1s !important;
+        margin-left: 300px !important;
+    }
+
+    /* Sidebar - original style (no background override, let theme apply) */
+    .sidebar {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 300px !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out !important;
+    }
+
+    .sidebar-footer {
+        position: fixed !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 300px !important;
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out !important;
+    }
+
+    /* ============================================
+       TABLET EXIT ANIMATION
+       Sidebar slides left, content slides down, background fades in
+       ============================================ */
+
+    /* Sidebar slides out to left */
+    .sidebar.sidebar-closing {
+        transform: translateX(-100%) !important;
+        opacity: 0 !important;
+    }
+
+    .sidebar.sidebar-closing .sidebar-footer {
+        transform: translateX(-100%) !important;
+        opacity: 0 !important;
+    }
+
+    /* Main content slides down and fades */
+    .main.edit.closing {
+        transform: translateY(100vh) !important;
+        opacity: 0 !important;
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out !important;
+    }
+
+    /* Show custom UI elements with fade-in when exiting edit mode */
+    .top-left-header.edit-mode-showing {
+        display: flex !important;
+        animation: fadeIn 0.5s ease-in-out forwards !important;
+    }
+
+    .top-right-status.edit-mode-showing {
+        display: block !important;
+        animation: fadeIn 0.5s ease-in-out forwards !important;
+    }
+
+    .animated-background.edit-mode-exiting {
+        display: block !important;
+        animation: fadeIn 0.5s ease-in-out forwards !important;
+    }
+
+    .responsive-cards.edit-mode-exiting {
+        display: block !important;
+        animation: fadeIn 0.5s ease-in-out forwards !important;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 }
 
@@ -2250,14 +2640,17 @@ footer {
         font-size: 16px;
     }
 
-    /* Top right status - adjust for mobile */
+    /* Status - positioned below logo and title on mobile */
     .top-right-status {
         position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        left: auto !important;
+        top: 55px !important;
+        left: 15px !important;
+        right: auto !important;
         font-size: 12px;
-        padding: 8px 12px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(5px);
     }
 
     /* Show responsive cards on mobile */
@@ -2269,7 +2662,7 @@ footer {
         width: 100% !important;
         max-height: none !important;
         overflow: visible !important;
-        padding: 70px 15px 150px 15px;
+        padding: 100px 15px 150px 15px;
         z-index: 10;
     }
 
@@ -2320,6 +2713,24 @@ footer {
         display: flex;
         align-items: center;
         gap: 10px;
+    }
+
+    .responsive-card .card-info .action {
+        cursor: pointer;
+        font-size: 14px;
+        transition: transform 0.2s ease;
+    }
+
+    .responsive-card .card-info .action:hover {
+        transform: scale(1.2);
+    }
+
+    .responsive-card .card-info .action.remove {
+        color: $danger;
+    }
+
+    .responsive-card .card-info .action.settings {
+        color: $primary;
     }
 
     .responsive-card .card-name {
@@ -2377,6 +2788,22 @@ footer {
 
     .refresh-info > div {
         display: inline;
+    }
+
+    /* ============================================
+       MOBILE - NO EDIT MODE ALLOWED
+       Hide edit button and prevent edit mode on mobile
+       ============================================ */
+
+    /* Hide edit button on mobile */
+    .header-buttons,
+    .top-left-header .btn-primary {
+        display: none !important;
+    }
+
+    /* If somehow edit mode is triggered on mobile, just hide the sidebar */
+    .sidebar {
+        display: none !important;
     }
 }
 
@@ -2484,5 +2911,18 @@ footer {
 
 .vicp-wrap {
     z-index: 10001 !important;
+}
+
+/* Ensure Bootstrap modals are above all fixed elements */
+.modal-backdrop {
+    z-index: 9000 !important;
+}
+
+.modal {
+    z-index: 9001 !important;
+}
+
+.modal-dialog {
+    z-index: 9002 !important;
 }
 </style>
