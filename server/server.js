@@ -321,6 +321,10 @@ let needSetup = false;
     const statusPageRouter = require("./routers/status-page-router");
     app.use(statusPageRouter);
 
+    // Telegram Bot Router
+    const telegramBotRouter = require("./routers/telegram-bot-router");
+    app.use("/api/telegram-bot", telegramBotRouter);
+
     // Universal Route Handler, must be at the end of all express routes.
     app.get("*", async (_request, response) => {
         if (_request.originalUrl.startsWith("/upload/")) {

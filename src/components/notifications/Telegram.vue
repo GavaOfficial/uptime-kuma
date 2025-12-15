@@ -103,6 +103,43 @@
             {{ $t("telegramProtectContentDescription") }}
         </div>
     </div>
+
+    <!-- Bot Commands Section -->
+    <div class="mb-3 mt-4">
+        <h6>Comandi Bot Interattivi</h6>
+        <div class="form-text mb-2">
+            Abilita i comandi per controllare i monitor da Telegram.
+            <br>
+            <b>Comandi:</b> /status, /check, /stats, /help
+        </div>
+
+        <div class="form-check form-switch mb-2">
+            <input v-model="$parent.notification.telegramEnableBotCommands" class="form-check-input" type="checkbox">
+            <label class="form-check-label">Abilita comandi bot</label>
+        </div>
+
+        <div v-if="$parent.notification.telegramEnableBotCommands" class="form-text text-muted">
+            Il bot si avvia automaticamente al salvataggio della notifica.
+        </div>
+    </div>
+
+    <!-- Auto Report Section -->
+    <div v-if="$parent.notification.telegramEnableBotCommands" class="mb-3">
+        <h6>Report Automatici</h6>
+        <div class="form-check form-switch mb-2">
+            <input v-model="$parent.notification.telegramEnableAutoReport" class="form-check-input" type="checkbox">
+            <label class="form-check-label">Abilita report automatici</label>
+        </div>
+
+        <template v-if="$parent.notification.telegramEnableAutoReport">
+            <label class="form-label">Frequenza report</label>
+            <select v-model="$parent.notification.telegramReportFrequency" class="form-select">
+                <option value="hourly">Ogni ora</option>
+                <option value="daily">Giornaliero</option>
+                <option value="weekly">Settimanale</option>
+            </select>
+        </template>
+    </div>
 </template>
 
 <script>
@@ -128,6 +165,7 @@ Uptime Kuma Alert{% if monitorJSON %} - {{ monitorJSON['name'] }}{% endif %}
     },
     mounted() {
         this.$parent.notification.telegramServerUrl ||= "https://api.telegram.org";
+        this.$parent.notification.telegramReportFrequency ||= "daily";
     },
     methods: {
         /**
