@@ -677,16 +677,29 @@ async function startPolling(notificationId) {
     // Use sequential polling instead of setInterval to avoid overlapping requests
     let isRunning = true;
     const pollLoop = async () => {
-        while (isRunning && activePollingJobs.has(notificationId)) {
-            await pollTelegramUpdates({ ...notification, config });
-            // Small delay between polls
-            await new Promise(resolve => setTimeout(resolve, 500));
+        log.info("telegram-bot", `Poll loop started for notification ${notificationId}`);
+        try {
+            while (isRunning && activePollingJobs.has(notificationId)) {
+                try {
+                    await pollTelegramUpdates({ ...notification, config });
+                } catch (pollError) {
+                    log.error("telegram-bot", `Poll error: ${pollError.message}`);
+                }
+                // Small delay between polls
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            log.info("telegram-bot", `Poll loop ended for notification ${notificationId} (isRunning=${isRunning}, inMap=${activePollingJobs.has(notificationId)})`);
+        } catch (loopError) {
+            log.error("telegram-bot", `Poll loop crashed: ${loopError.message}`);
         }
     };
 
     // Store a flag object so we can stop it later
     activePollingJobs.set(notificationId, {
-        stop: () => { isRunning = false; }
+        stop: () => {
+            log.info("telegram-bot", `Stop called for notification ${notificationId}`);
+            isRunning = false;
+        }
     });
 
     log.info("telegram-bot", `Polling started for notification ${notificationId}`);
@@ -700,6 +713,10 @@ async function startPolling(notificationId) {
  * @param {number} notificationId - Notification ID
  */
 function stopPolling(notificationId) {
+    // Log where this is being called from
+    const stack = new Error().stack.split("\n").slice(2, 4).join(" <- ");
+    log.info("telegram-bot", `stopPolling(${notificationId}) called from: ${stack}`);
+
     const pollingJob = activePollingJobs.get(notificationId);
     if (pollingJob) {
         if (typeof pollingJob.stop === "function") {
@@ -710,6 +727,8 @@ function stopPolling(notificationId) {
         }
         activePollingJobs.delete(notificationId);
         log.info("telegram-bot", `Polling stopped for notification ${notificationId}`);
+    } else {
+        log.info("telegram-bot", `stopPolling(${notificationId}) - no active job found`);
     }
 }
 
@@ -1048,6 +1067,16 @@ router.post("/start-polling/:notificationId", async (req, res) => {
     try {
         const notificationId = parseInt(req.params.notificationId);
 
+        // Check if already running - don't restart
+        if (activePollingJobs.has(notificationId)) {
+            log.info("telegram-bot", `Bot already running for notification ${notificationId}, skipping start`);
+            return res.json({
+                ok: true,
+                message: "Bot già attivo!",
+                status: "active"
+            });
+        }
+
         const notification = await R.findOne("notification", " id = ? ", [notificationId]);
         if (!notification) {
             return res.status(404).json({ error: "Notification not found" });
@@ -1129,6 +1158,84 @@ router.get("/polling-status/:notificationId", async (req, res) => {
 });
 
 /**
+ * Endpoint to update bot settings and restart if needed
+ * Called when notification is saved
+ */
+router.post("/update-bot/:notificationId", async (req, res) => {
+    try {
+        const notificationId = parseInt(req.params.notificationId);
+
+        const notification = await R.findOne("notification", " id = ? ", [notificationId]);
+        if (!notification) {
+            return res.status(404).json({ error: "Notification not found" });
+        }
+
+        const config = JSON.parse(notification.config || "{}");
+
+        // Check if bot commands are enabled
+        if (config.telegramEnableBotCommands && config.telegramBotToken) {
+            // Stop existing polling
+            stopPolling(notificationId);
+
+            // Wait a bit
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Start fresh polling with new settings
+            await startPolling(notificationId);
+
+            log.info("telegram-bot", `Bot updated and restarted for notification ${notificationId}`);
+        } else {
+            // Stop polling if bot commands disabled
+            stopPolling(notificationId);
+        }
+
+        // Handle auto report job
+        if (config.telegramEnableAutoReport) {
+            await startAutoReportJob(notificationId);
+        } else {
+            stopAutoReportJob(notificationId);
+        }
+
+        res.json({
+            ok: true,
+            botActive: activePollingJobs.has(notificationId),
+            reportActive: activeReportJobs.has(notificationId)
+        });
+    } catch (error) {
+        log.error("telegram-bot", `Update bot error: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+/**
+ * Endpoint to get all active bots status
+ */
+router.get("/all-bots-status", async (req, res) => {
+    try {
+        const notifications = await R.find("notification", " config LIKE ? ", ['%"telegramBotToken"%']);
+
+        const bots = [];
+        for (const notification of notifications) {
+            const config = JSON.parse(notification.config || "{}");
+            bots.push({
+                id: notification.id,
+                name: notification.name,
+                chatId: config.telegramChatID,
+                botEnabled: config.telegramEnableBotCommands || false,
+                botActive: activePollingJobs.has(notification.id),
+                autoReportEnabled: config.telegramEnableAutoReport || false,
+                autoReportActive: activeReportJobs.has(notification.id),
+                reportFrequency: config.telegramReportFrequency || "daily"
+            });
+        }
+
+        res.json({ ok: true, bots });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+/**
  * Endpoint to toggle auto report
  */
 router.post("/toggle-auto-report/:notificationId", async (req, res) => {
@@ -1183,4 +1290,80 @@ router.post("/test-report/:notificationId", async (req, res) => {
     }
 });
 
+/**
+ * Update bot and report jobs for a notification (exported for use from server.js)
+ * @param {number} notificationId - Notification ID
+ * @returns {Promise<void>}
+ */
+async function updateBotForNotification(notificationId) {
+    try {
+        const notification = await R.findOne("notification", " id = ? ", [notificationId]);
+        if (!notification) return;
+
+        const config = JSON.parse(notification.config || "{}");
+
+        // Check if it's a Telegram notification
+        if (!config.telegramBotToken) return;
+
+        // Handle bot commands
+        if (config.telegramEnableBotCommands) {
+            // Stop existing polling
+            stopPolling(notificationId);
+            // Wait a bit
+            await new Promise(resolve => setTimeout(resolve, 500));
+            // Start fresh polling
+            await startPolling(notificationId);
+            log.info("telegram-bot", `Bot auto-updated for notification ${notificationId}`);
+        } else {
+            stopPolling(notificationId);
+        }
+
+        // Handle auto report
+        if (config.telegramEnableAutoReport) {
+            await startAutoReportJob(notificationId);
+        } else {
+            stopAutoReportJob(notificationId);
+        }
+    } catch (error) {
+        log.error("telegram-bot", `Auto-update bot error: ${error.message}`);
+    }
+}
+
+/**
+ * Stop bot and report jobs for a notification (exported for use from server.js)
+ * @param {number} notificationId - Notification ID
+ */
+function stopBotForNotification(notificationId) {
+    stopPolling(notificationId);
+    stopAutoReportJob(notificationId);
+    log.info("telegram-bot", `Bot stopped for deleted notification ${notificationId}`);
+}
+
+/**
+ * Get bot status for a notification
+ * @param {number} notificationId - Notification ID
+ * @returns {string} "active" or "inactive"
+ */
+function getBotStatus(notificationId) {
+    return activePollingJobs.has(notificationId) ? "active" : "inactive";
+}
+
+/**
+ * Start bot for a notification (exported for socket handlers)
+ * @param {number} notificationId - Notification ID
+ * @returns {Promise<void>}
+ */
+async function startBotForNotification(notificationId) {
+    // Check if already running
+    if (activePollingJobs.has(notificationId)) {
+        log.info("telegram-bot", `Bot already running for notification ${notificationId}`);
+        return;
+    }
+    await startPolling(notificationId);
+}
+
 module.exports = router;
+module.exports.updateBotForNotification = updateBotForNotification;
+module.exports.stopBotForNotification = stopBotForNotification;
+module.exports.getBotStatus = getBotStatus;
+module.exports.startBotForNotification = startBotForNotification;

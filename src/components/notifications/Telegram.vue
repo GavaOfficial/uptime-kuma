@@ -118,8 +118,66 @@
             <label class="form-check-label">{{ $t("telegramEnableBotCommands") }}</label>
         </div>
 
-        <div v-if="$parent.notification.telegramEnableBotCommands" class="form-text text-muted">
-            {{ $t("telegramBotAutoStart") }}
+        <!-- Bot Status and Controls - Always show when enabled -->
+        <div v-if="$parent.notification.telegramEnableBotCommands" class="mt-2">
+            <!-- If notification not saved yet -->
+            <div v-if="!notificationId" class="form-text text-warning">
+                <font-awesome-icon icon="info-circle" class="me-1" />
+                {{ $t("telegramSaveToStart") }}
+            </div>
+
+            <!-- If notification is saved, show controls -->
+            <div v-else>
+                <!-- Loading state -->
+                <div v-if="botStatus === 'loading'" class="d-flex align-items-center">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    <span>{{ $t("loading") }}...</span>
+                </div>
+
+                <!-- Loaded state -->
+                <div v-else class="d-flex align-items-center flex-wrap gap-2">
+                    <span class="badge rounded-pill" :class="botStatus === 'active' ? 'bg-primary' : 'bg-danger'">
+                        {{ botStatus === 'active' ? $t("Up") : $t("Down") }}
+                    </span>
+                    <span class="me-auto">
+                        {{ botStatus === 'active' ? $t("telegramBotRunning") : $t("telegramBotStopped") }}
+                    </span>
+                    <span v-if="botStatusLoading" class="spinner-border spinner-border-sm"></span>
+                    <button
+                        v-if="botStatus !== 'active'"
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                        :disabled="botStatusLoading"
+                        @click="startBot"
+                    >
+                        <font-awesome-icon icon="play" class="me-1" />
+                        {{ $t("Resume") }}
+                    </button>
+                    <button
+                        v-if="botStatus === 'active'"
+                        class="btn btn-secondary btn-sm"
+                        type="button"
+                        :disabled="botStatusLoading"
+                        @click="stopBot"
+                    >
+                        <font-awesome-icon icon="pause" class="me-1" />
+                        {{ $t("Pause") }}
+                    </button>
+                    <button
+                        v-if="botStatus === 'active'"
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                        :disabled="botStatusLoading"
+                        @click="restartBot"
+                    >
+                        <font-awesome-icon icon="redo" class="me-1" />
+                        {{ $t("telegramRestartBot") }}
+                    </button>
+                </div>
+                <div class="form-text">
+                    {{ $t("telegramBotAutoStart") }}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -152,7 +210,17 @@ export default {
         HiddenInput,
         TemplatedTextarea,
     },
+    data() {
+        return {
+            botStatus: "loading",
+            botStatusLoading: false,
+            statusCheckInterval: null,
+        };
+    },
     computed: {
+        notificationId() {
+            return this.$parent.id;
+        },
         telegramTemplatedTextareaPlaceholder() {
             return this.$t("Example:", [
                 `
@@ -163,11 +231,131 @@ Uptime Kuma Alert{% if monitorJSON %} - {{ monitorJSON['name'] }}{% endif %}
             ]);
         }
     },
+    watch: {
+        notificationId: {
+            immediate: true,
+            handler(newId) {
+                if (newId) {
+                    this.checkBotStatus();
+                    // Start periodic status check when ID becomes available
+                    this.startStatusCheck();
+                }
+            }
+        },
+        "$parent.notification.telegramEnableBotCommands": {
+            handler(newVal) {
+                if (this.notificationId) {
+                    // When the checkbox changes, update bot status
+                    setTimeout(() => this.checkBotStatus(), 500);
+                }
+            }
+        }
+    },
     mounted() {
         this.$parent.notification.telegramServerUrl ||= "https://api.telegram.org";
         this.$parent.notification.telegramReportFrequency ||= "daily";
+
+        // Check bot status if notification already exists
+        if (this.notificationId) {
+            this.checkBotStatus();
+            this.startStatusCheck();
+        }
+    },
+    beforeUnmount() {
+        if (this.statusCheckInterval) {
+            clearInterval(this.statusCheckInterval);
+        }
     },
     methods: {
+        /**
+         * Start periodic status check
+         */
+        startStatusCheck() {
+            // Clear existing interval if any
+            if (this.statusCheckInterval) {
+                clearInterval(this.statusCheckInterval);
+            }
+            // Set up periodic status check every 5 seconds
+            this.statusCheckInterval = setInterval(() => {
+                if (this.notificationId && this.$parent.notification.telegramEnableBotCommands) {
+                    this.checkBotStatus();
+                }
+            }, 5000);
+        },
+
+        /**
+         * Check the current bot polling status
+         * @returns {Promise<void>}
+         */
+        checkBotStatus() {
+            if (!this.notificationId) return;
+
+            this.$root.getSocket().emit("getTelegramBotStatus", this.notificationId, (res) => {
+                if (res.ok) {
+                    this.botStatus = res.status;
+                } else {
+                    this.botStatus = "inactive";
+                }
+            });
+        },
+
+        /**
+         * Start the bot polling
+         * @returns {Promise<void>}
+         */
+        startBot() {
+            if (!this.notificationId) return;
+
+            this.botStatusLoading = true;
+            this.$root.getSocket().emit("startTelegramBot", this.notificationId, (res) => {
+                this.botStatusLoading = false;
+                if (res.ok) {
+                    this.$root.toastSuccess(this.$t("telegramBotStarted"));
+                    this.botStatus = "active";
+                } else {
+                    this.$root.toastError(res.msg || "Error starting bot");
+                }
+            });
+        },
+
+        /**
+         * Stop the bot polling
+         * @returns {Promise<void>}
+         */
+        stopBot() {
+            if (!this.notificationId) return;
+
+            this.botStatusLoading = true;
+            this.$root.getSocket().emit("stopTelegramBot", this.notificationId, (res) => {
+                this.botStatusLoading = false;
+                if (res.ok) {
+                    this.$root.toastSuccess(this.$t("telegramBotStopped"));
+                    this.botStatus = "inactive";
+                } else {
+                    this.$root.toastError(res.msg || "Error stopping bot");
+                }
+            });
+        },
+
+        /**
+         * Restart the bot (stop then start)
+         * @returns {Promise<void>}
+         */
+        restartBot() {
+            if (!this.notificationId) return;
+
+            this.botStatusLoading = true;
+            this.$root.getSocket().emit("restartTelegramBot", this.notificationId, (res) => {
+                this.botStatusLoading = false;
+                if (res.ok) {
+                    this.$root.toastSuccess(this.$t("telegramBotRestarted"));
+                    this.botStatus = "active";
+                } else {
+                    this.$root.toastError(res.msg || "Error restarting bot");
+                }
+            });
+        },
+
         /**
          * Get the URL for telegram updates
          * @param {string} mode Should the token be masked?

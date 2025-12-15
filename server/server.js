@@ -323,6 +323,7 @@ let needSetup = false;
 
     // Telegram Bot Router
     const telegramBotRouter = require("./routers/telegram-bot-router");
+    const { updateBotForNotification, stopBotForNotification } = telegramBotRouter;
     app.use("/api/telegram-bot", telegramBotRouter);
 
     // Universal Route Handler, must be at the end of all express routes.
@@ -1505,6 +1506,11 @@ let needSetup = false;
                 let notificationBean = await Notification.save(notification, notificationID, socket.userID);
                 await sendNotificationList(socket);
 
+                // Auto-update Telegram bot if it's a Telegram notification
+                if (notification.telegramBotToken) {
+                    await updateBotForNotification(notificationBean.id);
+                }
+
                 callback({
                     ok: true,
                     msg: "Saved.",
@@ -1523,6 +1529,9 @@ let needSetup = false;
         socket.on("deleteNotification", async (notificationID, callback) => {
             try {
                 checkLogin(socket);
+
+                // Stop Telegram bot if it was running for this notification
+                stopBotForNotification(notificationID);
 
                 await Notification.delete(notificationID, socket.userID);
                 await sendNotificationList(socket);
@@ -1568,6 +1577,73 @@ let needSetup = false;
                 callback(await Notification.checkApprise());
             } catch (e) {
                 callback(false);
+            }
+        });
+
+        // Telegram Bot Socket Handlers
+        socket.on("getTelegramBotStatus", async (notificationId, callback) => {
+            try {
+                checkLogin(socket);
+                const status = telegramBotRouter.getBotStatus(notificationId);
+                callback({
+                    ok: true,
+                    status: status
+                });
+            } catch (e) {
+                callback({
+                    ok: false,
+                    msg: e.message
+                });
+            }
+        });
+
+        socket.on("startTelegramBot", async (notificationId, callback) => {
+            try {
+                checkLogin(socket);
+                await telegramBotRouter.startBotForNotification(notificationId);
+                callback({
+                    ok: true,
+                    status: "active"
+                });
+            } catch (e) {
+                callback({
+                    ok: false,
+                    msg: e.message
+                });
+            }
+        });
+
+        socket.on("stopTelegramBot", async (notificationId, callback) => {
+            try {
+                checkLogin(socket);
+                telegramBotRouter.stopBotForNotification(notificationId);
+                callback({
+                    ok: true,
+                    status: "inactive"
+                });
+            } catch (e) {
+                callback({
+                    ok: false,
+                    msg: e.message
+                });
+            }
+        });
+
+        socket.on("restartTelegramBot", async (notificationId, callback) => {
+            try {
+                checkLogin(socket);
+                telegramBotRouter.stopBotForNotification(notificationId);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                await telegramBotRouter.startBotForNotification(notificationId);
+                callback({
+                    ok: true,
+                    status: "active"
+                });
+            } catch (e) {
+                callback({
+                    ok: false,
+                    msg: e.message
+                });
             }
         });
 
