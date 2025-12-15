@@ -776,5 +776,20 @@
     "Invert Keyword": "הפוך מילת מפתח",
     "filterActive": "פעיל",
     "Expected Value": "ערך צפוי",
-    "Json Query": "שאילתת Json"
+    "Json Query": "שאילתת Json",
+    "telegramBotCommands": "פקודות בוט אינטראקטיביות",
+    "telegramBotCommandsDescription": "הפעל פקודות לניהול מוניטרים מטלגרם.",
+    "telegramBotCommandsList": "פקודות: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "הפעל פקודות בוט",
+    "telegramBotAutoStart": "הבוט מתחיל אוטומטית כאשר ההתראה נשמרת.",
+    "telegramAutoReports": "דוחות אוטומטיים",
+    "telegramEnableAutoReport": "הפעל דוחות אוטומטיים",
+    "telegramReportFrequencyLabel": "תדירות הדוח",
+    "telegramReportHourly": "כל שעה",
+    "telegramReportDaily": "יומי",
+    "telegramReportWeekly": "שבועי",
+    "logoImage": "לוגו / תמונה",
+    "editImage": "ערוך תמונה",
+    "customUIBy": "ממשק מותאם אישית על ידי",
+    "unofficial": "לא רשמי"
 }

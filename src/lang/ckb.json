@@ -42,5 +42,20 @@
     "General Monitor Type": "جۆری مۆنیتەری گشتی",
     "DateTime": "رێکەوت",
     "Current": "هەنووکە",
-    "Monitor": "مۆنیتەر | مۆنیتەرەکان"
+    "Monitor": "مۆنیتەر | مۆنیتەرەکان",
+    "telegramBotCommands": "فەرمانەکانی بۆتی کارلێکەر",
+    "telegramBotCommandsDescription": "فەرمانەکان چالاک بکە بۆ بەڕێوەبردنی مۆنیتەرەکان لە تێلیگرام.",
+    "telegramBotCommandsList": "فەرمانەکان: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "فەرمانەکانی بۆت چالاک بکە",
+    "telegramBotAutoStart": "بۆت بە شێوەیەکی ئۆتۆماتیکی دەست پێ دەکات کاتێک ئاگاداری پاشەکەوت دەکرێت.",
+    "telegramAutoReports": "ڕاپۆرتی ئۆتۆماتیکی",
+    "telegramEnableAutoReport": "ڕاپۆرتی ئۆتۆماتیکی چالاک بکە",
+    "telegramReportFrequencyLabel": "بووژانەوەی ڕاپۆرت",
+    "telegramReportHourly": "کاتژمێرانە",
+    "telegramReportDaily": "ڕۆژانە",
+    "telegramReportWeekly": "هەفتانە",
+    "logoImage": "لۆگۆ / وێنە",
+    "editImage": "وێنە بژارکردن",
+    "customUIBy": "ڕووکاری تایبەت لەلایەن",
+    "unofficial": "نافەرمی"
 }

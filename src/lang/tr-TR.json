@@ -1246,5 +1246,20 @@
     "Allow Notifications": "Bildirimlere İzin Ver",
     "Unable to get permission to notify": "Bildirim izni alınamadı (talep reddedildi veya yok sayıldı).",
     "Webpush Helptext": "Web push yalnızca SSL (HTTPS) bağlantılarıyla çalışır. iOS cihazlarda, web sayfasının önceden ana ekrana eklenmesi gerekir.",
-    "showOnlyLastHeartbeat": "Yalnızca Son Ping’i Göster"
+    "showOnlyLastHeartbeat": "Yalnızca Son Ping'i Göster",
+    "telegramBotCommands": "Etkileşimli Bot Komutları",
+    "telegramBotCommandsDescription": "Telegram'dan monitörleri yönetmek için komutları etkinleştirin.",
+    "telegramBotCommandsList": "Komutlar: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Bot komutlarını etkinleştir",
+    "telegramBotAutoStart": "Bildirim kaydedildiğinde bot otomatik olarak başlar.",
+    "telegramAutoReports": "Otomatik Raporlar",
+    "telegramEnableAutoReport": "Otomatik raporları etkinleştir",
+    "telegramReportFrequencyLabel": "Rapor sıklığı",
+    "telegramReportHourly": "Saatlik",
+    "telegramReportDaily": "Günlük",
+    "telegramReportWeekly": "Haftalık",
+    "logoImage": "Logo / Görsel",
+    "editImage": "Görseli düzenle",
+    "customUIBy": "Özel UI tasarımı",
+    "unofficial": "Resmi olmayan"
 }

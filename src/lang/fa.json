@@ -1192,5 +1192,20 @@
     "ariaResumeMaintenance": "ادامه این برنامه نگهداری",
     "Template ID": "کد قالب",
     "wayToGetClickSMSIRTemplateID": "قالب شما باید یک فیلد {uptkumaalert} داشته باشد. از {here} میتوانید یک قالب جدید ایجاد کنید.",
-    "Recipient Numbers": "شماره مشترکین"
+    "Recipient Numbers": "شماره مشترکین",
+    "telegramBotCommands": "دستورات تعاملی بات",
+    "telegramBotCommandsDescription": "دستورات را برای مدیریت مانیتورها از تلگرام فعال کنید.",
+    "telegramBotCommandsList": "دستورات: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "فعال‌سازی دستورات بات",
+    "telegramBotAutoStart": "بات به‌صورت خودکار هنگام ذخیره اعلان شروع به کار می‌کند.",
+    "telegramAutoReports": "گزارش‌های خودکار",
+    "telegramEnableAutoReport": "فعال‌سازی گزارش‌های خودکار",
+    "telegramReportFrequencyLabel": "تناوب گزارش",
+    "telegramReportHourly": "ساعتی",
+    "telegramReportDaily": "روزانه",
+    "telegramReportWeekly": "هفتگی",
+    "logoImage": "لوگو / تصویر",
+    "editImage": "ویرایش تصویر",
+    "customUIBy": "رابط کاربری سفارشی توسط",
+    "unofficial": "غیررسمی"
 }

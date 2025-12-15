@@ -111,5 +111,20 @@
     "Create your admin account": "Naprivi administratorski nalog",
     "Repeat Password": "Ponovite lozinku",
     "respTime": "Vreme odg. (ms)",
-    "notAvailableShort": "N/A"
+    "notAvailableShort": "N/A",
+    "telegramBotCommands": "Interaktivne komande bota",
+    "telegramBotCommandsDescription": "Omogućite komande za upravljanje monitorima iz Telegrama.",
+    "telegramBotCommandsList": "Komande: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Omogući komande bota",
+    "telegramBotAutoStart": "Bot se automatski pokreće kada se obaveštenje sačuva.",
+    "telegramAutoReports": "Automatski izveštaji",
+    "telegramEnableAutoReport": "Omogući automatske izveštaje",
+    "telegramReportFrequencyLabel": "Učestalost izveštaja",
+    "telegramReportHourly": "Svaki sat",
+    "telegramReportDaily": "Dnevno",
+    "telegramReportWeekly": "Nedeljno",
+    "logoImage": "Logo / Slika",
+    "editImage": "Uredi sliku",
+    "customUIBy": "Prilagođeni interfejs od",
+    "unofficial": "Nezvanično"
 }

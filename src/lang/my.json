@@ -91,5 +91,20 @@
     "retriesDescription": "ဝန်ဆောင်မှုကွန်ယက်ပြတ်တောက်နေ၍ သတိပေးချက်ပေးပို့ပြီး အများဆုံးထပ်မံကြိုးစားနိုင်မှု",
     "Search Engine Visibility": "ရှာဖွေမှုအင်ဂျင်များ၏မြင်နိုင်စွမ်း",
     "setupDatabaseEmbeddedMariaDB": "You don't need to set anything. This docker image has embedded and configured MariaDB for you automatically. Uptime Kuma will connect to this database via unix socket.",
-    "setupDatabaseChooseDatabase": "English"
+    "setupDatabaseChooseDatabase": "English",
+    "telegramBotCommands": "အပြန်အလှန်အကျိုးပြုဘော့တ်ညွှန်ကြားချက်များ",
+    "telegramBotCommandsDescription": "Telegram မှ monitors များကို စီမံခန့်ခွဲရန် commands များကို ဖွင့်ပါ။",
+    "telegramBotCommandsList": "Commands: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Bot commands များကို ဖွင့်ပါ",
+    "telegramBotAutoStart": "သတိပေးချက်သိမ်းဆည်းသောအခါ bot သည် အလိုအလျောက်စတင်သည်။",
+    "telegramAutoReports": "အလိုအလျောက် အစီရင်ခံစာများ",
+    "telegramEnableAutoReport": "အလိုအလျောက် အစီရင်ခံစာများကို ဖွင့်ပါ",
+    "telegramReportFrequencyLabel": "အစီရင်ခံစာ အကြိမ်ရေ",
+    "telegramReportHourly": "နာရီတိုင်း",
+    "telegramReportDaily": "နေ့စဉ်",
+    "telegramReportWeekly": "အပတ်စဉ်",
+    "logoImage": "လိုဂို / ပုံ",
+    "editImage": "ပုံကို ပြင်ဆင်မည်",
+    "customUIBy": "စိတ်ကြိုက် UI မှ",
+    "unofficial": "တရားဝင်မဟုတ်သော"
 }

@@ -106,37 +106,37 @@
 
     <!-- Bot Commands Section -->
     <div class="mb-3 mt-4">
-        <h6>Comandi Bot Interattivi</h6>
+        <h6>{{ $t("telegramBotCommands") }}</h6>
         <div class="form-text mb-2">
-            Abilita i comandi per controllare i monitor da Telegram.
+            {{ $t("telegramBotCommandsDescription") }}
             <br>
-            <b>Comandi:</b> /status, /check, /stats, /help
+            <b>{{ $t("telegramBotCommandsList") }}</b>
         </div>
 
         <div class="form-check form-switch mb-2">
             <input v-model="$parent.notification.telegramEnableBotCommands" class="form-check-input" type="checkbox">
-            <label class="form-check-label">Abilita comandi bot</label>
+            <label class="form-check-label">{{ $t("telegramEnableBotCommands") }}</label>
         </div>
 
         <div v-if="$parent.notification.telegramEnableBotCommands" class="form-text text-muted">
-            Il bot si avvia automaticamente al salvataggio della notifica.
+            {{ $t("telegramBotAutoStart") }}
         </div>
     </div>
 
     <!-- Auto Report Section -->
     <div v-if="$parent.notification.telegramEnableBotCommands" class="mb-3">
-        <h6>Report Automatici</h6>
+        <h6>{{ $t("telegramAutoReports") }}</h6>
         <div class="form-check form-switch mb-2">
             <input v-model="$parent.notification.telegramEnableAutoReport" class="form-check-input" type="checkbox">
-            <label class="form-check-label">Abilita report automatici</label>
+            <label class="form-check-label">{{ $t("telegramEnableAutoReport") }}</label>
         </div>
 
         <template v-if="$parent.notification.telegramEnableAutoReport">
-            <label class="form-label">Frequenza report</label>
+            <label class="form-label">{{ $t("telegramReportFrequencyLabel") }}</label>
             <select v-model="$parent.notification.telegramReportFrequency" class="form-select">
-                <option value="hourly">Ogni ora</option>
-                <option value="daily">Giornaliero</option>
-                <option value="weekly">Settimanale</option>
+                <option value="hourly">{{ $t("telegramReportHourly") }}</option>
+                <option value="daily">{{ $t("telegramReportDaily") }}</option>
+                <option value="weekly">{{ $t("telegramReportWeekly") }}</option>
             </select>
         </template>
     </div>

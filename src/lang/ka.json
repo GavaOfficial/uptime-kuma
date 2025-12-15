@@ -304,5 +304,20 @@
     "resendDisabled": "თავიდან გაგზავნა გამორთულია",
     "Cert Exp.": "სერტ. ვადა.",
     "Max. Redirects": "მაქს. გადამისამართებები",
-    "Heartbeat Interval": "გულისცემის შუალედი"
+    "Heartbeat Interval": "გულისცემის შუალედი",
+    "telegramBotCommands": "ინტერაქტიული ბოტის ბრძანებები",
+    "telegramBotCommandsDescription": "ჩართეთ ბრძანებები მონიტორების მართვისთვის Telegram-იდან.",
+    "telegramBotCommandsList": "ბრძანებები: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "ბოტის ბრძანებების ჩართვა",
+    "telegramBotAutoStart": "ბოტი ავტომატურად იწყება შეტყობინების შენახვისას.",
+    "telegramAutoReports": "ავტომატური ანგარიშები",
+    "telegramEnableAutoReport": "ავტომატური ანგარიშების ჩართვა",
+    "telegramReportFrequencyLabel": "ანგარიშის სიხშირე",
+    "telegramReportHourly": "საათობრივი",
+    "telegramReportDaily": "ყოველდღიური",
+    "telegramReportWeekly": "ყოველკვირეული",
+    "logoImage": "ლოგო / სურათი",
+    "editImage": "სურათის ჩასწორება",
+    "customUIBy": "მორგებული UI:",
+    "unofficial": "არაოფიციალური"
 }

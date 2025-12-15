@@ -746,5 +746,20 @@
     "templateStatus": "egoera",
     "webhookBodyCustomOption": "Pertsonalizatutako mezu gorputza",
     "telegramSendSilentlyDescription": "Bidali mezuak isilik. Erabiltzaileak soinurik gabeko jakinarazpena jasoko du.",
-    "setupDatabaseMariaDB": "Konektatu kanpo MariaDB datu base batekin. Datu base konexioaren informazioa ezarri behar da."
+    "setupDatabaseMariaDB": "Konektatu kanpo MariaDB datu base batekin. Datu base konexioaren informazioa ezarri behar da.",
+    "telegramBotCommands": "Bot agindu interaktiboak",
+    "telegramBotCommandsDescription": "Gaitu aginduak monitoreak Telegram-etik kudeatzeko.",
+    "telegramBotCommandsList": "Aginduak: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Gaitu bot aginduak",
+    "telegramBotAutoStart": "Bota automatikoki abiatzen da jakinarazpena gordetzean.",
+    "telegramAutoReports": "Txosten automatikoak",
+    "telegramEnableAutoReport": "Gaitu txosten automatikoak",
+    "telegramReportFrequencyLabel": "Txostenaren maiztasuna",
+    "telegramReportHourly": "Orduro",
+    "telegramReportDaily": "Egunero",
+    "telegramReportWeekly": "Astero",
+    "logoImage": "Logoa / Irudia",
+    "editImage": "Editatu irudia",
+    "customUIBy": "UI pertsonalizatua:",
+    "unofficial": "Ez-ofiziala"
 }

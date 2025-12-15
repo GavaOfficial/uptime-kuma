@@ -635,5 +635,20 @@
     "keywordDescription": "Cerca paraules clau en HTML pla o en resposta JSON. La cerca distingeix entre majúscules i minúscules.",
     "jsonQueryDescription": "Analitza i extreu dades específiques de la resposta JSON del servidor mitjançant una JSON query, o bé utilitza “$” per mostrar la resposta en cru si no s’espera un JSON.\nEl resultat es compara amb el valor esperat com a cadenes de text. Consulta {0} per veure la documentació i fes servir {1} per provar consultes.",
     "auto-select": "Selecció Automàtica",
-    "backupDescription2": "Nota: les dades d’historial i d’esdeveniments no estan incloses."
+    "backupDescription2": "Nota: les dades d'historial i d'esdeveniments no estan incloses.",
+    "telegramBotCommands": "Ordres de Bot Interactives",
+    "telegramBotCommandsDescription": "Habilita les ordres per gestionar monitors des de Telegram.",
+    "telegramBotCommandsList": "Ordres: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Habilitar ordres del bot",
+    "telegramBotAutoStart": "El bot s'inicia automàticament quan es desa la notificació.",
+    "telegramAutoReports": "Informes Automàtics",
+    "telegramEnableAutoReport": "Habilitar informes automàtics",
+    "telegramReportFrequencyLabel": "Freqüència d'informe",
+    "telegramReportHourly": "Cada hora",
+    "telegramReportDaily": "Diàriament",
+    "telegramReportWeekly": "Setmanalment",
+    "logoImage": "Logotip / Imatge",
+    "editImage": "Editar imatge",
+    "customUIBy": "Interfície personalitzada per",
+    "unofficial": "No oficial"
 }

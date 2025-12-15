@@ -1280,5 +1280,20 @@
     "Collection Update": "The Collection Update Websocket подпротокол",
     "Text IRC Protocol": "Text IRC протокол",
     "Binary IRC Protocol": "Binary IRC протокол",
-    "Penguin Statistics Live Protocol v3": "Penguin Statistics Live протокол v3 (Protobuf кодировка)"
+    "Penguin Statistics Live Protocol v3": "Penguin Statistics Live протокол v3 (Protobuf кодировка)",
+    "telegramBotCommands": "Интерактивни Bot Команди",
+    "telegramBotCommandsDescription": "Активирай команди за управление на монитори от Telegram.",
+    "telegramBotCommandsList": "Команди: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Активирай bot команди",
+    "telegramBotAutoStart": "Ботът стартира автоматично при запазване на известието.",
+    "telegramAutoReports": "Автоматични Отчети",
+    "telegramEnableAutoReport": "Активирай автоматични отчети",
+    "telegramReportFrequencyLabel": "Честота на отчетите",
+    "telegramReportHourly": "Всеки час",
+    "telegramReportDaily": "Ежедневно",
+    "telegramReportWeekly": "Ежеседмично",
+    "logoImage": "Лого / Изображение",
+    "editImage": "Редактирай изображение",
+    "customUIBy": "Персонализиран интерфейс от",
+    "unofficial": "Неофициален"
 }

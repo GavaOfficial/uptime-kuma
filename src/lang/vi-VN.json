@@ -555,5 +555,20 @@
     "selectedMonitorCount": "Đã chọn: {0}",
     "Either enter the hostname of the server you want to connect to or localhost if you intend to use a locally configured mail transfer agent": "nhập hostname của server bạn muốn kết nối hoặc {localhost} nếu bạn muốn dùng {local_mta}",
     "webhookBodyPresetOption": "Cài đặt sẵn",
-    "critical": "nguy kịch"
+    "critical": "nguy kịch",
+    "telegramBotCommands": "Lệnh Bot Tương Tác",
+    "telegramBotCommandsDescription": "Bật các lệnh để quản lý monitors từ Telegram.",
+    "telegramBotCommandsList": "Lệnh: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Bật lệnh bot",
+    "telegramBotAutoStart": "Bot sẽ tự động khởi động khi lưu thông báo.",
+    "telegramAutoReports": "Báo cáo tự động",
+    "telegramEnableAutoReport": "Bật báo cáo tự động",
+    "telegramReportFrequencyLabel": "Tần suất báo cáo",
+    "telegramReportHourly": "Hàng giờ",
+    "telegramReportDaily": "Hàng ngày",
+    "telegramReportWeekly": "Hàng tuần",
+    "logoImage": "Logo / Hình ảnh",
+    "editImage": "Chỉnh sửa hình ảnh",
+    "customUIBy": "UI tùy chỉnh bởi",
+    "unofficial": "Không chính thức"
 }

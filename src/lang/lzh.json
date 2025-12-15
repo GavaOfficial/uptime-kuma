@@ -1,1 +1,17 @@
-{}
+{
+    "telegramBotCommands": "Interactive Bot Commands",
+    "telegramBotCommandsDescription": "Enable commands to manage monitors from Telegram.",
+    "telegramBotCommandsList": "Commands: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Enable bot commands",
+    "telegramBotAutoStart": "The bot starts automatically when the notification is saved.",
+    "telegramAutoReports": "Automatic Reports",
+    "telegramEnableAutoReport": "Enable automatic reports",
+    "telegramReportFrequencyLabel": "Report frequency",
+    "telegramReportHourly": "Hourly",
+    "telegramReportDaily": "Daily",
+    "telegramReportWeekly": "Weekly",
+    "logoImage": "Logo / Image",
+    "editImage": "Edit image",
+    "customUIBy": "Custom UI by",
+    "unofficial": "Unofficial"
+}

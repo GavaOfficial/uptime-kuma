@@ -110,5 +110,20 @@
     "Last Result": "Последњи резултат",
     "Create your admin account": "Наприви администраторски налог",
     "Repeat Password": "Поновите лозинку",
-    "respTime": "Време одг. (мс)"
+    "respTime": "Време одг. (мс)",
+    "telegramBotCommands": "Интерактивне команде бота",
+    "telegramBotCommandsDescription": "Омогућите команде за управљање мониторима из Telegram-а.",
+    "telegramBotCommandsList": "Команде: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Омогући команде бота",
+    "telegramBotAutoStart": "Бот се аутоматски покреће када се обавештење сачува.",
+    "telegramAutoReports": "Аутоматски извештаји",
+    "telegramEnableAutoReport": "Омогући аутоматске извештаје",
+    "telegramReportFrequencyLabel": "Учесталост извештаја",
+    "telegramReportHourly": "Сваки сат",
+    "telegramReportDaily": "Дневно",
+    "telegramReportWeekly": "Недељно",
+    "logoImage": "Лого / Слика",
+    "editImage": "Уреди слику",
+    "customUIBy": "Прилагођени интерфејс од",
+    "unofficial": "Незванично"
 }

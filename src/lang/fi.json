@@ -1149,5 +1149,20 @@
     "ntfyPriorityDown": "DOWN-tapahtumien prioriteetti",
     "FlashDuty Push URL": "Pushaamiseen URL-osoite",
     "FlashDuty Push URL Placeholder": "Kopioi hälytysintegraatiosivulta",
-    "pingCountDescription": "Numeroina määrä paketteja, jotka lähetetään ennen lopettamista."
+    "pingCountDescription": "Numeroina määrä paketteja, jotka lähetetään ennen lopettamista.",
+    "telegramBotCommands": "Interaktiiviset Bot-komennot",
+    "telegramBotCommandsDescription": "Ota komennot käyttöön monitorien hallintaan Telegramista.",
+    "telegramBotCommandsList": "Komennot: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Ota bot-komennot käyttöön",
+    "telegramBotAutoStart": "Bot käynnistyy automaattisesti, kun ilmoitus tallennetaan.",
+    "telegramAutoReports": "Automaattiset raportit",
+    "telegramEnableAutoReport": "Ota automaattiset raportit käyttöön",
+    "telegramReportFrequencyLabel": "Raportin tiheys",
+    "telegramReportHourly": "Tunneittain",
+    "telegramReportDaily": "Päivittäin",
+    "telegramReportWeekly": "Viikoittain",
+    "logoImage": "Logo / Kuva",
+    "editImage": "Muokkaa kuvaa",
+    "customUIBy": "Mukautettu käyttöliittymä",
+    "unofficial": "Epävirallinen"
 }

@@ -1234,5 +1234,20 @@
     "ariaDeleteMaintenance": "Obriši ovaj raspored održavanja",
     "twilioApiKeyHelptext": "API ključ je neobvezan, ali se preporučuje. Možete navesti ili SID računa i AuthToken s Twilio konzole ili SID računa te API ključ s tajnom",
     "twilioMessagingServiceSID": "SID usluge za slanje poruka (neobvezno)",
-    "twilloMessagingServiceSIDHelptext": "Ovdje unesite SID svoje usluge za slanje poruka ako koristite {twillo_messaging_service_help_link} za upravljanje pošiljateljima i ostalim značajkama"
+    "twilloMessagingServiceSIDHelptext": "Ovdje unesite SID svoje usluge za slanje poruka ako koristite {twillo_messaging_service_help_link} za upravljanje pošiljateljima i ostalim značajkama",
+    "telegramBotCommands": "Interaktivne Bot Naredbe",
+    "telegramBotCommandsDescription": "Omogući naredbe za upravljanje monitorima iz Telegrama.",
+    "telegramBotCommandsList": "Naredbe: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Omogući bot naredbe",
+    "telegramBotAutoStart": "Bot se automatski pokreće kada se obavijest spremi.",
+    "telegramAutoReports": "Automatski izvještaji",
+    "telegramEnableAutoReport": "Omogući automatske izvještaje",
+    "telegramReportFrequencyLabel": "Učestalost izvještaja",
+    "telegramReportHourly": "Svaki sat",
+    "telegramReportDaily": "Dnevno",
+    "telegramReportWeekly": "Tjedno",
+    "logoImage": "Logo / Slika",
+    "editImage": "Uredi sliku",
+    "customUIBy": "Prilagođeno sučelje od",
+    "unofficial": "Neslužbeno"
 }

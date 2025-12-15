@@ -106,5 +106,20 @@
     "dbName": "資料庫名稱",
     "Home": "首頁",
     "Cannot connect to the socket server": "連唔到 Socket 伺服器",
-    "Reconnecting...": "重新連線中..."
+    "Reconnecting...": "重新連線中...",
+    "telegramBotCommands": "互動式 Bot 指令",
+    "telegramBotCommandsDescription": "啟用指令嚟喺 Telegram 管理監測器。",
+    "telegramBotCommandsList": "指令: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "啟用 Bot 指令",
+    "telegramBotAutoStart": "儲存通知後 Bot 會自動啟動。",
+    "telegramAutoReports": "自動報告",
+    "telegramEnableAutoReport": "啟用自動報告",
+    "telegramReportFrequencyLabel": "報告頻率",
+    "telegramReportHourly": "每個鐘",
+    "telegramReportDaily": "每日",
+    "telegramReportWeekly": "每星期",
+    "logoImage": "標誌 / 圖片",
+    "editImage": "編輯圖片",
+    "customUIBy": "自訂介面由",
+    "unofficial": "非官方"
 }

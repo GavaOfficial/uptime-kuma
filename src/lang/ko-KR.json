@@ -961,5 +961,20 @@
     "Originator": "발신자",
     "cellsyntOriginator": "수신자의 휴대폰에 메시지 발신자로 표시됩니다. 허용되는 값과 기능은 originatortype 매개변수에 따라 다릅니다.",
     "Message Template": "메세지 템플릿",
-    "descriptionHelpText": "내부 대시보드에 표시됩니다. 마크다운 사용이 허용되며, 표시 전에 정제 처리됩니다(공백과 들여쓰기 유지)."
+    "descriptionHelpText": "내부 대시보드에 표시됩니다. 마크다운 사용이 허용되며, 표시 전에 정제 처리됩니다(공백과 들여쓰기 유지).",
+    "telegramBotCommands": "대화형 봇 명령어",
+    "telegramBotCommandsDescription": "텔레그램에서 모니터를 관리하기 위한 명령어를 활성화합니다.",
+    "telegramBotCommandsList": "명령어: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "봇 명령어 활성화",
+    "telegramBotAutoStart": "알림이 저장되면 봇이 자동으로 시작됩니다.",
+    "telegramAutoReports": "자동 보고서",
+    "telegramEnableAutoReport": "자동 보고서 활성화",
+    "telegramReportFrequencyLabel": "보고서 빈도",
+    "telegramReportHourly": "매시간",
+    "telegramReportDaily": "매일",
+    "telegramReportWeekly": "매주",
+    "logoImage": "로고 / 이미지",
+    "editImage": "이미지 편집",
+    "customUIBy": "커스텀 UI 제작",
+    "unofficial": "비공식"
 }

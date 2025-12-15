@@ -479,5 +479,20 @@
     "templateLimitedToUpDownNotifications": "apenas disponível para notificações UP/DOWN",
     "-year": "-ano",
     "Json Query Expression": "Expressão Json Query",
-    "ignoredTLSError": "Erros TLS/SSL foram ignorados"
+    "ignoredTLSError": "Erros TLS/SSL foram ignorados",
+    "telegramBotCommands": "Comandos Interativos do Bot",
+    "telegramBotCommandsDescription": "Ativar comandos para gerir monitores a partir do Telegram.",
+    "telegramBotCommandsList": "Comandos: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Ativar comandos do bot",
+    "telegramBotAutoStart": "O bot inicia automaticamente quando a notificação é guardada.",
+    "telegramAutoReports": "Relatórios Automáticos",
+    "telegramEnableAutoReport": "Ativar relatórios automáticos",
+    "telegramReportFrequencyLabel": "Frequência do relatório",
+    "telegramReportHourly": "A cada hora",
+    "telegramReportDaily": "Diariamente",
+    "telegramReportWeekly": "Semanalmente",
+    "logoImage": "Logo / Imagem",
+    "editImage": "Editar imagem",
+    "customUIBy": "Interface personalizada por",
+    "unofficial": "Não oficial"
 }

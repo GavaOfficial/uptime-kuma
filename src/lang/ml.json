@@ -48,5 +48,20 @@
     "Setup Notification": "വിജ്ഞാപനം സജ്ജമാക്കുക",
     "Light": "വെളിച്ചം",
     "Dark": "ഇരുട്ട്",
-    "Auto": "സ്വയം"
+    "Auto": "സ്വയം",
+    "telegramBotCommands": "ഇന്ററാക്ടീവ് ബോട്ട് കമാൻഡുകൾ",
+    "telegramBotCommandsDescription": "ടെലിഗ്രാമിൽ നിന്ന് മോണിറ്ററുകൾ നിയന്ത്രിക്കാൻ കമാൻഡുകൾ പ്രവർത്തനക്ഷമമാക്കുക.",
+    "telegramBotCommandsList": "കമാൻഡുകൾ: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "ബോട്ട് കമാൻഡുകൾ പ്രവർത്തനക്ഷമമാക്കുക",
+    "telegramBotAutoStart": "അറിയിപ്പ് സേവ് ചെയ്യുമ്പോൾ ബോട്ട് യാന്ത്രികമായി ആരംഭിക്കുന്നു.",
+    "telegramAutoReports": "യാന്ത്രിക റിപ്പോർട്ടുകൾ",
+    "telegramEnableAutoReport": "യാന്ത്രിക റിപ്പോർട്ടുകൾ പ്രവർത്തനക്ഷമമാക്കുക",
+    "telegramReportFrequencyLabel": "റിപ്പോർട്ട് ആവൃത്തി",
+    "telegramReportHourly": "ഓരോ മണിക്കൂറിലും",
+    "telegramReportDaily": "ദിവസേന",
+    "telegramReportWeekly": "ആഴ്ചയിൽ",
+    "logoImage": "ലോഗോ / ചിത്രം",
+    "editImage": "ചിത്രം എഡിറ്റ് ചെയ്യുക",
+    "customUIBy": "ഇഷ്ടാനുസൃത UI:",
+    "unofficial": "ഔദ്യോഗികമല്ല"
 }

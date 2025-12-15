@@ -814,5 +814,20 @@
     "Clear All Events": "Ryd alle begivenheder",
     "clearAllEventsMsg": "Er du sikker på du vil slette alle begivenheder?",
     "Remove domain": "Fjern domæne '{0}'",
-    "tagNameExists": "Et system tag med dette navn eksisterer allerede. Vælg det fra listen eller brug et andet navn."
+    "tagNameExists": "Et system tag med dette navn eksisterer allerede. Vælg det fra listen eller brug et andet navn.",
+    "telegramBotCommands": "Interaktive Bot Kommandoer",
+    "telegramBotCommandsDescription": "Aktiver kommandoer til at styre monitorer fra Telegram.",
+    "telegramBotCommandsList": "Kommandoer: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Aktiver bot kommandoer",
+    "telegramBotAutoStart": "Botten starter automatisk når notifikationen gemmes.",
+    "telegramAutoReports": "Automatiske Rapporter",
+    "telegramEnableAutoReport": "Aktiver automatiske rapporter",
+    "telegramReportFrequencyLabel": "Rapport frekvens",
+    "telegramReportHourly": "Hver time",
+    "telegramReportDaily": "Dagligt",
+    "telegramReportWeekly": "Ugentligt",
+    "logoImage": "Logo / Billede",
+    "editImage": "Rediger billede",
+    "customUIBy": "Tilpasset UI af",
+    "unofficial": "Uofficiel"
 }

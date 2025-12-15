@@ -93,5 +93,20 @@
     "Not available, please setup.": "Mavjud emas, sozlang.",
     "Light": "Yorug'",
     "Dark": "Qorung'u",
-    "Auto": "Avto"
+    "Auto": "Avto",
+    "telegramBotCommands": "Interaktiv Bot Buyruqlari",
+    "telegramBotCommandsDescription": "Telegram orqali monitorlarni boshqarish uchun buyruqlarni yoqing.",
+    "telegramBotCommandsList": "Buyruqlar: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Bot buyruqlarini yoqish",
+    "telegramBotAutoStart": "Bildirishnoma saqlanganda bot avtomatik ishga tushadi.",
+    "telegramAutoReports": "Avtomatik Hisobotlar",
+    "telegramEnableAutoReport": "Avtomatik hisobotlarni yoqish",
+    "telegramReportFrequencyLabel": "Hisobot chastotasi",
+    "telegramReportHourly": "Har soatda",
+    "telegramReportDaily": "Har kuni",
+    "telegramReportWeekly": "Har hafta",
+    "logoImage": "Logo / Rasm",
+    "editImage": "Rasmni tahrirlash",
+    "customUIBy": "Maxsus UI:",
+    "unofficial": "Norasmiy"
 }

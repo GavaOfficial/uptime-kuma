@@ -1230,5 +1230,20 @@
     "ariaResumeMaintenance": "Pokračovat v tomto plánu údržby",
     "ariaCloneMaintenance": "Vytvořit kopii tohoto plánu údržby",
     "ariaEditMaintenance": "Upravit tento plán údržby",
-    "ariaDeleteMaintenance": "Odstranit tento plán údržby"
+    "ariaDeleteMaintenance": "Odstranit tento plán údržby",
+    "telegramBotCommands": "Interaktivní příkazy bota",
+    "telegramBotCommandsDescription": "Povolte příkazy pro správu monitorů z Telegramu.",
+    "telegramBotCommandsList": "Příkazy: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Povolit příkazy bota",
+    "telegramBotAutoStart": "Bot se automaticky spustí při uložení oznámení.",
+    "telegramAutoReports": "Automatické zprávy",
+    "telegramEnableAutoReport": "Povolit automatické zprávy",
+    "telegramReportFrequencyLabel": "Frekvence zpráv",
+    "telegramReportHourly": "Každou hodinu",
+    "telegramReportDaily": "Denně",
+    "telegramReportWeekly": "Týdně",
+    "logoImage": "Logo / Obrázek",
+    "editImage": "Upravit obrázek",
+    "customUIBy": "Vlastní rozhraní od",
+    "unofficial": "Neoficiální"
 }

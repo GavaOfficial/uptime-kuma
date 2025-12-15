@@ -787,5 +787,20 @@
     "Json Query Expression": "Έκφραση Json Query",
     "Request Timeout": "Timeout Αιτήματος",
     "timeoutAfter": "Λήξη χρόνου ύστερα από {0} δευτερόλεπτα",
-    "pushViewCode": "Πώς να χρησιμοποιήσω Οθόνη Push (βλέπε κώδικα)"
+    "pushViewCode": "Πώς να χρησιμοποιήσω Οθόνη Push (βλέπε κώδικα)",
+    "telegramBotCommands": "Διαδραστικές Εντολές Bot",
+    "telegramBotCommandsDescription": "Ενεργοποίηση εντολών για διαχείριση monitors από το Telegram.",
+    "telegramBotCommandsList": "Εντολές: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Ενεργοποίηση εντολών bot",
+    "telegramBotAutoStart": "Το bot ξεκινά αυτόματα όταν αποθηκευτεί η ειδοποίηση.",
+    "telegramAutoReports": "Αυτόματες Αναφορές",
+    "telegramEnableAutoReport": "Ενεργοποίηση αυτόματων αναφορών",
+    "telegramReportFrequencyLabel": "Συχνότητα αναφοράς",
+    "telegramReportHourly": "Ωριαία",
+    "telegramReportDaily": "Ημερήσια",
+    "telegramReportWeekly": "Εβδομαδιαία",
+    "logoImage": "Λογότυπο / Εικόνα",
+    "editImage": "Επεξεργασία εικόνας",
+    "customUIBy": "Προσαρμοσμένο UI από",
+    "unofficial": "Ανεπίσημο"
 }

@@ -3,5 +3,20 @@
     "setupDatabaseChooseDatabase": "Kuru datubāzi izmantosiet?",
     "setupDatabaseEmbeddedMariaDB": "Jums nav nekas jādara. Docker imidžā ir iebūvēta un automātiski konfigurēta MariaDB datubāze. Uptime Kuma pieslēgsies šai datubāzei izmantojot unix soketu.",
     "setupDatabaseSQLite": "Vienkāršs datu bāzes fails, iesakāms maza izmēra risinājumiem. Pirms versijas v2.0.0 SQLite bija noklusējuma datubāze.",
-    "setupDatabaseMariaDB": "Pieslēgties ārējai MariaDB datubāzei. Jums būs jākonfigurē datubāzes pieslēgšanās informācija."
+    "setupDatabaseMariaDB": "Pieslēgties ārējai MariaDB datubāzei. Jums būs jākonfigurē datubāzes pieslēgšanās informācija.",
+    "telegramBotCommands": "Interaktīvas bota komandas",
+    "telegramBotCommandsDescription": "Iespējot komandas monitoru pārvaldībai no Telegram.",
+    "telegramBotCommandsList": "Komandas: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Iespējot bota komandas",
+    "telegramBotAutoStart": "Bots tiks automātiski palaists, kad paziņojums tiks saglabāts.",
+    "telegramAutoReports": "Automātiskie pārskati",
+    "telegramEnableAutoReport": "Iespējot automātiskos pārskatus",
+    "telegramReportFrequencyLabel": "Pārskata biežums",
+    "telegramReportHourly": "Katru stundu",
+    "telegramReportDaily": "Katru dienu",
+    "telegramReportWeekly": "Katru nedēļu",
+    "logoImage": "Logo / Attēls",
+    "editImage": "Rediģēt attēlu",
+    "customUIBy": "Pielāgota saskarne no",
+    "unofficial": "Neoficiāls"
 }

@@ -251,5 +251,20 @@
     "DateTime": "DataKoha",
     "Message": "Mesazhi",
     "No important events": "Nuk ka ndodhi të rëndësishme",
-    "Resume": "Vazhdo"
+    "Resume": "Vazhdo",
+    "telegramBotCommands": "Komandat Interaktive të Bot-it",
+    "telegramBotCommandsDescription": "Aktivizo komandat për të menaxhuar monitorët nga Telegram.",
+    "telegramBotCommandsList": "Komandat: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Aktivizo komandat e bot-it",
+    "telegramBotAutoStart": "Bot-i fillon automatikisht kur njoftimi ruhet.",
+    "telegramAutoReports": "Raporte Automatike",
+    "telegramEnableAutoReport": "Aktivizo raportet automatike",
+    "telegramReportFrequencyLabel": "Frekuenca e raportit",
+    "telegramReportHourly": "Çdo orë",
+    "telegramReportDaily": "Çdo ditë",
+    "telegramReportWeekly": "Çdo javë",
+    "logoImage": "Logo / Imazh",
+    "editImage": "Modifiko imazhin",
+    "customUIBy": "Ndërfaqja e personalizuar nga",
+    "unofficial": "Jozyrtare"
 }

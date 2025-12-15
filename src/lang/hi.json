@@ -115,5 +115,20 @@
     "New Password": "नया पासवर्ड",
     "Update Password": "पासवर्ड अपडेट करें",
     "Change Password": "पासवर्ड बदलें",
-    "Normal": "सामान्य"
+    "Normal": "सामान्य",
+    "telegramBotCommands": "इंटरैक्टिव बॉट कमांड",
+    "telegramBotCommandsDescription": "टेलीग्राम से मॉनिटर प्रबंधित करने के लिए कमांड सक्षम करें।",
+    "telegramBotCommandsList": "कमांड: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "बॉट कमांड सक्षम करें",
+    "telegramBotAutoStart": "नोटिफिकेशन सहेजने पर बॉट स्वचालित रूप से शुरू होता है।",
+    "telegramAutoReports": "स्वचालित रिपोर्ट",
+    "telegramEnableAutoReport": "स्वचालित रिपोर्ट सक्षम करें",
+    "telegramReportFrequencyLabel": "रिपोर्ट आवृत्ति",
+    "telegramReportHourly": "प्रति घंटा",
+    "telegramReportDaily": "दैनिक",
+    "telegramReportWeekly": "साप्ताहिक",
+    "logoImage": "लोगो / छवि",
+    "editImage": "छवि संपादित करें",
+    "customUIBy": "कस्टम यूआई द्वारा",
+    "unofficial": "अनौपचारिक"
 }

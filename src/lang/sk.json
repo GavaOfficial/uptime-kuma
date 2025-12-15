@@ -1239,5 +1239,20 @@
     "Penguin Statistics Live Protocol v3": "Protokol Penguin Statistics Live v3 (kódovanie Protobuf)",
     "certHostnameMismatch": "Certifikát hostiteľa sa nezhoduje s URL adresou monitora.",
     "minimumIntervalWarning": "Intervaly kratšie ako 20 sekúnd môžu mať za následok zníženie výkonu.",
-    "lowIntervalWarning": "Naozaj chcete nastaviť interval na hodnotu nižšiu ako 20 sekúnd? Výkon sa môže znížiť, najmä ak je veľký počet monitorov."
+    "lowIntervalWarning": "Naozaj chcete nastaviť interval na hodnotu nižšiu ako 20 sekúnd? Výkon sa môže znížiť, najmä ak je veľký počet monitorov.",
+    "telegramBotCommands": "Interaktívne príkazy bota",
+    "telegramBotCommandsDescription": "Povoľte príkazy na správu sledovaní z Telegramu.",
+    "telegramBotCommandsList": "Príkazy: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Povoliť príkazy bota",
+    "telegramBotAutoStart": "Bot sa automaticky spustí pri uložení oznámenia.",
+    "telegramAutoReports": "Automatické správy",
+    "telegramEnableAutoReport": "Povoliť automatické správy",
+    "telegramReportFrequencyLabel": "Frekvencia správ",
+    "telegramReportHourly": "Každú hodinu",
+    "telegramReportDaily": "Denne",
+    "telegramReportWeekly": "Týždenne",
+    "logoImage": "Logo / Obrázok",
+    "editImage": "Upraviť obrázok",
+    "customUIBy": "Vlastné rozhranie od",
+    "unofficial": "Neoficiálne"
 }

@@ -1237,6 +1237,21 @@
     "Unable to get permission to notify": "Ní féidir cead a fháil chun fógra a thabhairt (diúltaíodh nó neamhaird déanta ar an iarratas).",
     "Webpush Helptext": "Ní oibríonn brú gréasáin ach le naisc SSL (HTTPS). I gcás gléasanna iOS, ní mór leathanach gréasáin a chur leis an scáileán baile roimh ré.",
     "showOnlyLastHeartbeat": "Taispeáin an Buille Croí Deireanach Amháin",
-    "minimumIntervalWarning": "D’fhéadfadh eatraimh faoi bhun 20 soicind drochfheidhmíocht a bheith mar thoradh air.",
-    "lowIntervalWarning": "An bhfuil tú cinnte gur mian leat an luach eatraimh a shocrú faoi bhun 20 soicind? D’fhéadfadh an fheidhmíocht dul in olcas, go háirithe má tá líon mór monatóirí ann."
+    "minimumIntervalWarning": "D'fhéadfadh eatraimh faoi bhun 20 soicind drochfheidhmíocht a bheith mar thoradh air.",
+    "lowIntervalWarning": "An bhfuil tú cinnte gur mian leat an luach eatraimh a shocrú faoi bhun 20 soicind? D'fhéadfadh an fheidhmíocht dul in olcas, go háirithe má tá líon mór monatóirí ann.",
+    "telegramBotCommands": "Orduithe Idirghníomhacha Bot",
+    "telegramBotCommandsDescription": "Cumasaigh orduithe chun monatóirí a bhainistiú ó Telegram.",
+    "telegramBotCommandsList": "Orduithe: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Cumasaigh orduithe bot",
+    "telegramBotAutoStart": "Tosaíonn an bot go huathoibríoch nuair a shábháiltear an fógra.",
+    "telegramAutoReports": "Tuairiscí Uathoibríocha",
+    "telegramEnableAutoReport": "Cumasaigh tuairiscí uathoibríocha",
+    "telegramReportFrequencyLabel": "Minicíocht tuairisce",
+    "telegramReportHourly": "Gach uair",
+    "telegramReportDaily": "Gach lá",
+    "telegramReportWeekly": "Gach seachtain",
+    "logoImage": "Lógó / Íomhá",
+    "editImage": "Cuir an íomhá in eagar",
+    "customUIBy": "Comhéadan saincheaptha ag",
+    "unofficial": "Neamhoifigiúil"
 }

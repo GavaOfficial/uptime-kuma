@@ -115,12 +115,12 @@
 
                 <!-- Logo/Image -->
                 <div class="my-3">
-                    <label class="form-label">Logo / Immagine</label>
+                    <label class="form-label">{{ $t("logoImage") }}</label>
                     <div class="logo-edit-section">
                         <img :src="logoURL" alt="Logo" class="logo-preview" :class="{ 'logo-animate-in': enableEditMode && !isClosingEditMode, 'logo-animate-out': isClosingEditMode }" />
                         <button type="button" class="btn btn-primary btn-sm" @click="showImageCropUpload = true">
                             <font-awesome-icon icon="upload" class="me-1" />
-                            Modifica Immagine
+                            {{ $t("editImage") }}
                         </button>
                     </div>
                 </div>
@@ -461,7 +461,7 @@
                     {{ $t("Powered by") }} <a target="_blank" rel="noopener noreferrer" href="https://github.com/louislam/uptime-kuma">{{ $t("Uptime Kuma" ) }}</a>
                 </p>
                 <p class="custom-ui-credit">
-                    Custom UI by <a target="_blank" rel="noopener noreferrer" href="https://github.com/GavaOfficial">GavaOfficial</a> (Unofficial)
+                    {{ $t("customUIBy") }} <a target="_blank" rel="noopener noreferrer" href="https://github.com/GavaOfficial">GavaOfficial</a> ({{ $t("unofficial") }})
                 </p>
 
                 <div class="refresh-info mb-2">

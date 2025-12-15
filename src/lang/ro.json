@@ -1077,5 +1077,20 @@
     "Separate multiple email addresses with commas": "Separați adresele de e-mail multiple cu virgule",
     "Correct": "Corect",
     "Fail": "Eșec",
-    "shrinkDatabaseDescriptionSqlite": "Declanșează comanda {vacuum} pentru baza de date SQLite. {auto_vacuum} este deja activat, dar acest lucru nu defragmentează baza de date și nici nu reîmpachetează paginile individuale ale bazei de date așa cum o face comanda {vacuum}."
+    "shrinkDatabaseDescriptionSqlite": "Declanșează comanda {vacuum} pentru baza de date SQLite. {auto_vacuum} este deja activat, dar acest lucru nu defragmentează baza de date și nici nu reîmpachetează paginile individuale ale bazei de date așa cum o face comanda {vacuum}.",
+    "telegramBotCommands": "Comenzi Bot Interactive",
+    "telegramBotCommandsDescription": "Activează comenzi pentru gestionarea monitoarelor din Telegram.",
+    "telegramBotCommandsList": "Comenzi: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Activează comenzile bot",
+    "telegramBotAutoStart": "Botul pornește automat când notificarea este salvată.",
+    "telegramAutoReports": "Rapoarte Automate",
+    "telegramEnableAutoReport": "Activează rapoartele automate",
+    "telegramReportFrequencyLabel": "Frecvența raportului",
+    "telegramReportHourly": "La fiecare oră",
+    "telegramReportDaily": "Zilnic",
+    "telegramReportWeekly": "Săptămânal",
+    "logoImage": "Logo / Imagine",
+    "editImage": "Editează imaginea",
+    "customUIBy": "Interfață personalizată de",
+    "unofficial": "Neoficial"
 }

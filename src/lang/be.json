@@ -974,5 +974,20 @@
     "cacheBusterParam": "Дадайце параметр {0}",
     "defaultFriendlyName": "Новы манiтор",
     "Path": "Шлях",
-    "Add Tags": "Дадаць тэгi"
+    "Add Tags": "Дадаць тэгi",
+    "telegramBotCommands": "Інтэрактыўныя каманды бота",
+    "telegramBotCommandsDescription": "Уключыць каманды для кіравання маніторамі з Telegram.",
+    "telegramBotCommandsList": "Каманды: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Уключыць каманды бота",
+    "telegramBotAutoStart": "Бот аўтаматычна запускаецца пры захаванні апавяшчэння.",
+    "telegramAutoReports": "Аўтаматычныя справаздачы",
+    "telegramEnableAutoReport": "Уключыць аўтаматычныя справаздачы",
+    "telegramReportFrequencyLabel": "Перыядычнасць справаздач",
+    "telegramReportHourly": "Штогадзіну",
+    "telegramReportDaily": "Штодня",
+    "telegramReportWeekly": "Штотыдзень",
+    "logoImage": "Лагатып / Відарыс",
+    "editImage": "Рэдагаваць відарыс",
+    "customUIBy": "Карыстацкі інтэрфейс ад",
+    "unofficial": "Неафіцыйны"
 }

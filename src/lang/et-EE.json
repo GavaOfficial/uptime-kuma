@@ -313,5 +313,20 @@
     "Switch to Light Theme": "Vaheta heledale teemale",
     "Discard": "Loobu",
     "deleteStatusPageMsg": "Kas Sa oled kindel, et soovid kustutada seda staatuse lehte?",
-    "Resend Notification if Down X times consecutively": "Saada teavitus uuesti kui monitor on rikkis X korda järjest"
+    "Resend Notification if Down X times consecutively": "Saada teavitus uuesti kui monitor on rikkis X korda järjest",
+    "telegramBotCommands": "Interaktiivsed boti käsud",
+    "telegramBotCommandsDescription": "Luba käsud monitoride haldamiseks Telegramist.",
+    "telegramBotCommandsList": "Käsud: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Luba boti käsud",
+    "telegramBotAutoStart": "Bot käivitub automaatselt, kui teavitus salvestatakse.",
+    "telegramAutoReports": "Automaatsed aruanded",
+    "telegramEnableAutoReport": "Luba automaatsed aruanded",
+    "telegramReportFrequencyLabel": "Aruande sagedus",
+    "telegramReportHourly": "Tunni tagant",
+    "telegramReportDaily": "Iga päev",
+    "telegramReportWeekly": "Iga nädal",
+    "logoImage": "Logo / Pilt",
+    "editImage": "Muuda pilti",
+    "customUIBy": "Kohandatud kasutajaliides",
+    "unofficial": "Mitteametlik"
 }

@@ -2,5 +2,20 @@
     "Language": "Sprach",
     "Home": "Dahoam",
     "setupDatabaseChooseDatabase": "Wos für a Datenbank wuist du?",
-    "setupDatabaseEmbeddedMariaDB": "Da brauchst nix mocha. Des Docker Buidl hod a Datenbank dabai und nimmt MariaDB. Uptime Kuma verbint se mit Unix Socket."
+    "setupDatabaseEmbeddedMariaDB": "Da brauchst nix mocha. Des Docker Buidl hod a Datenbank dabai und nimmt MariaDB. Uptime Kuma verbint se mit Unix Socket.",
+    "telegramBotCommands": "Interaktive Bot Befehle",
+    "telegramBotCommandsDescription": "Aktivier Befehle zum Monitore vo Telegram aus verwoiten.",
+    "telegramBotCommandsList": "Befehle: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Bot Befehle aktiviern",
+    "telegramBotAutoStart": "Da Bot startet automatisch wenns Benachrichtigung gspeichert wird.",
+    "telegramAutoReports": "Automatische Berichte",
+    "telegramEnableAutoReport": "Automatische Berichte aktiviern",
+    "telegramReportFrequencyLabel": "Berichts-Häufigkeit",
+    "telegramReportHourly": "Stündlich",
+    "telegramReportDaily": "Täglich",
+    "telegramReportWeekly": "Wöchentlich",
+    "logoImage": "Logo / Buidl",
+    "editImage": "Buidl beorbeiten",
+    "customUIBy": "Benutzeroberfläche vo",
+    "unofficial": "Inoffiziell"
 }

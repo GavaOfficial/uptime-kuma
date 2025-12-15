@@ -991,5 +991,20 @@
     "successKeywordExplanation": "คีย์เวิร์ด MQTT ที่จะถูกพิจารณาว่าสำเร็จ",
     "defaultFriendlyName": "มอนิเตอร์ใหม่",
     "tagAlreadyOnMonitor": "แท็กที่ระบุ (ชื่อและค่า) มีอยู่ในระบบแล้ว หรืออยู่ในระหว่างรอการเพิ่ม",
-    "Add Tags": "เพิ่มแท็ก"
+    "Add Tags": "เพิ่มแท็ก",
+    "telegramBotCommands": "คำสั่งบอทแบบโต้ตอบ",
+    "telegramBotCommandsDescription": "เปิดใช้งานคำสั่งเพื่อจัดการมอนิเตอร์จาก Telegram",
+    "telegramBotCommandsList": "คำสั่ง: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "เปิดใช้งานคำสั่งบอท",
+    "telegramBotAutoStart": "บอทจะเริ่มต้นโดยอัตโนมัติเมื่อบันทึกการแจ้งเตือน",
+    "telegramAutoReports": "รายงานอัตโนมัติ",
+    "telegramEnableAutoReport": "เปิดใช้งานรายงานอัตโนมัติ",
+    "telegramReportFrequencyLabel": "ความถี่รายงาน",
+    "telegramReportHourly": "ทุกชั่วโมง",
+    "telegramReportDaily": "ทุกวัน",
+    "telegramReportWeekly": "ทุกสัปดาห์",
+    "logoImage": "โลโก้ / รูปภาพ",
+    "editImage": "แก้ไขรูปภาพ",
+    "customUIBy": "UI ที่กำหนดเองโดย",
+    "unofficial": "ไม่เป็นทางการ"
 }

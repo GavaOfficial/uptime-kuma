@@ -1176,5 +1176,20 @@
     "Bot secret": "বট গোপন",
     "Nextcloud host": "নেক্সটক্লাউড হোস্ট",
     "Send DOWN silently": "নীরবে নিচে পাঠান",
-    "Installing a Nextcloud Talk bot requires administrative access to the server.": "নেক্সটক্লাউড টক বট ইনস্টল করার জন্য সার্ভারে প্রশাসনিক অ্যাক্সেস প্রয়োজন।"
+    "Installing a Nextcloud Talk bot requires administrative access to the server.": "নেক্সটক্লাউড টক বট ইনস্টল করার জন্য সার্ভারে প্রশাসনিক অ্যাক্সেস প্রয়োজন।",
+    "telegramBotCommands": "ইন্টারেক্টিভ বট কমান্ড",
+    "telegramBotCommandsDescription": "টেলিগ্রাম থেকে মনিটর পরিচালনা করার জন্য কমান্ড সক্ষম করুন।",
+    "telegramBotCommandsList": "কমান্ড: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "বট কমান্ড সক্ষম করুন",
+    "telegramBotAutoStart": "বিজ্ঞপ্তি সংরক্ষণ করার সময় বট স্বয়ংক্রিয়ভাবে শুরু হয়।",
+    "telegramAutoReports": "স্বয়ংক্রিয় রিপোর্ট",
+    "telegramEnableAutoReport": "স্বয়ংক্রিয় রিপোর্ট সক্ষম করুন",
+    "telegramReportFrequencyLabel": "রিপোর্টের ফ্রিকোয়েন্সি",
+    "telegramReportHourly": "প্রতি ঘন্টায়",
+    "telegramReportDaily": "প্রতিদিন",
+    "telegramReportWeekly": "প্রতি সপ্তাহে",
+    "logoImage": "লোগো / ছবি",
+    "editImage": "ছবি সম্পাদনা করুন",
+    "customUIBy": "কাস্টম UI দ্বারা",
+    "unofficial": "অনানুষ্ঠানিক"
 }

@@ -1246,5 +1246,20 @@
     "tagAlreadyStaged": "Den här taggen (namn och värde) är redan satt för den här batchen.",
     "tagNameExists": "En systemtagg med det här namnet finns redan. Välj den från listan eller använd ett annat namn.",
     "groupOnesenderDesc": "Se till att grupp-ID:t är giltigt. För att skicka meddelande till gruppen, t.ex.: 628123456789-342345",
-    "privateOnesenderDesc": "Se till att telefonnumret är giltigt. För att skicka meddelande till ett privat telefonnummer, t.ex.: 628123456789"
+    "privateOnesenderDesc": "Se till att telefonnumret är giltigt. För att skicka meddelande till ett privat telefonnummer, t.ex.: 628123456789",
+    "telegramBotCommands": "Interaktiva botkommandon",
+    "telegramBotCommandsDescription": "Aktivera kommandon för att hantera monitorer från Telegram.",
+    "telegramBotCommandsList": "Kommandon: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Aktivera botkommandon",
+    "telegramBotAutoStart": "Boten startar automatiskt när aviseringen sparas.",
+    "telegramAutoReports": "Automatiska rapporter",
+    "telegramEnableAutoReport": "Aktivera automatiska rapporter",
+    "telegramReportFrequencyLabel": "Rapportfrekvens",
+    "telegramReportHourly": "Varje timme",
+    "telegramReportDaily": "Dagligen",
+    "telegramReportWeekly": "Veckovis",
+    "logoImage": "Logotyp / Bild",
+    "editImage": "Redigera bild",
+    "customUIBy": "Anpassat gränssnitt av",
+    "unofficial": "Inofficiell"
 }

@@ -1,5 +1,20 @@
 {
     "Help": "עזרה",
     "languageName": "עברית",
-    "setupDatabaseChooseDatabase": "באיזה מסד נתונים אתה רוצה להשתמש?"
+    "setupDatabaseChooseDatabase": "באיזה מסד נתונים אתה רוצה להשתמש?",
+    "telegramBotCommands": "פקודות בוט אינטראקטיביות",
+    "telegramBotCommandsDescription": "הפעל פקודות לניהול מוניטורים מטלגרם.",
+    "telegramBotCommandsList": "פקודות: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "הפעל פקודות בוט",
+    "telegramBotAutoStart": "הבוט מתחיל אוטומטית כשההתראה נשמרת.",
+    "telegramAutoReports": "דוחות אוטומטיים",
+    "telegramEnableAutoReport": "הפעל דוחות אוטומטיים",
+    "telegramReportFrequencyLabel": "תדירות דוח",
+    "telegramReportHourly": "שעתי",
+    "telegramReportDaily": "יומי",
+    "telegramReportWeekly": "שבועי",
+    "logoImage": "לוגו / תמונה",
+    "editImage": "ערוך תמונה",
+    "customUIBy": "ממשק מותאם אישית מאת",
+    "unofficial": "לא רשמי"
 }

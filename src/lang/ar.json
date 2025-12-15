@@ -761,5 +761,20 @@
     "Add a domain": "إضافة نطاق",
     "Remove domain": "إزالة النطاق '{0}'",
     "time ago": "منذ {0}",
-    "startDateTime": "تاريخ/وقت البدء"
+    "startDateTime": "تاريخ/وقت البدء",
+    "telegramBotCommands": "أوامر البوت التفاعلية",
+    "telegramBotCommandsDescription": "تفعيل الأوامر لإدارة المراقبات من تيليجرام.",
+    "telegramBotCommandsList": "الأوامر: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "تفعيل أوامر البوت",
+    "telegramBotAutoStart": "يبدأ البوت تلقائياً عند حفظ الإشعار.",
+    "telegramAutoReports": "تقارير تلقائية",
+    "telegramEnableAutoReport": "تفعيل التقارير التلقائية",
+    "telegramReportFrequencyLabel": "تردد التقرير",
+    "telegramReportHourly": "كل ساعة",
+    "telegramReportDaily": "يومياً",
+    "telegramReportWeekly": "أسبوعياً",
+    "logoImage": "الشعار / الصورة",
+    "editImage": "تعديل الصورة",
+    "customUIBy": "واجهة مخصصة من",
+    "unofficial": "غير رسمي"
 }

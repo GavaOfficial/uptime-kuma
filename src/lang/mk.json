@@ -88,5 +88,20 @@
     "Resend Notification if Down X times consecutively": "Повторно испратете известување ако е долу X пати последователно",
     "retriesDescription": "Максимално повторување пред услугата да биде означена како неискористена и да се испрати известување",
     "maxRedirectDescription": "Максимален број пренасочувања што треба да се следат. Поставете на 0 за да ги оневозможите пренасочувањата.",
-    "needPushEvery": "Треба да ја повикувате оваа URL на секои {0} секунди."
+    "needPushEvery": "Треба да ја повикувате оваа URL на секои {0} секунди.",
+    "telegramBotCommands": "Интерактивни команди за бот",
+    "telegramBotCommandsDescription": "Овозможете команди за управување со монитори од Telegram.",
+    "telegramBotCommandsList": "Команди: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Овозможи команди за бот",
+    "telegramBotAutoStart": "Ботот автоматски се стартува кога известувањето е зачувано.",
+    "telegramAutoReports": "Автоматски извештаи",
+    "telegramEnableAutoReport": "Овозможи автоматски извештаи",
+    "telegramReportFrequencyLabel": "Фреквенција на извештај",
+    "telegramReportHourly": "Секој час",
+    "telegramReportDaily": "Дневно",
+    "telegramReportWeekly": "Неделно",
+    "logoImage": "Лого / Слика",
+    "editImage": "Уреди слика",
+    "customUIBy": "Прилагоден UI од",
+    "unofficial": "Неофицијално"
 }

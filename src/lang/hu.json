@@ -1163,5 +1163,20 @@
     "FlashDuty Push URL": "Push URL",
     "Clear All Events": "Összes esemény törlése",
     "clearAllEventsMsg": "Biztosan törölni szeretné az összes eseményt?",
-    "SpugPush Template Code": "Sablon kód"
+    "SpugPush Template Code": "Sablon kód",
+    "telegramBotCommands": "Interaktív Bot Parancsok",
+    "telegramBotCommandsDescription": "Parancsok engedélyezése a monitorok kezeléséhez a Telegramból.",
+    "telegramBotCommandsList": "Parancsok: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Bot parancsok engedélyezése",
+    "telegramBotAutoStart": "A bot automatikusan elindul az értesítés mentésekor.",
+    "telegramAutoReports": "Automatikus jelentések",
+    "telegramEnableAutoReport": "Automatikus jelentések engedélyezése",
+    "telegramReportFrequencyLabel": "Jelentés gyakoriság",
+    "telegramReportHourly": "Óránként",
+    "telegramReportDaily": "Naponta",
+    "telegramReportWeekly": "Hetente",
+    "logoImage": "Logó / Kép",
+    "editImage": "Kép szerkesztése",
+    "customUIBy": "Egyéni UI készítette",
+    "unofficial": "Nem hivatalos"
 }

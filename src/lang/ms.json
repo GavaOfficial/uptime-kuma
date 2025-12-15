@@ -85,5 +85,20 @@
     "URL": "URL",
     "Expected Value": "Nilai Sepatutnya",
     "Friendly Name": "Nama Mudah",
-    "Hostname": "Nama Host"
+    "Hostname": "Nama Host",
+    "telegramBotCommands": "Arahan Bot Interaktif",
+    "telegramBotCommandsDescription": "Dayakan arahan untuk mengurus monitor dari Telegram.",
+    "telegramBotCommandsList": "Arahan: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Dayakan arahan bot",
+    "telegramBotAutoStart": "Bot akan bermula secara automatik apabila pemberitahuan disimpan.",
+    "telegramAutoReports": "Laporan Automatik",
+    "telegramEnableAutoReport": "Dayakan laporan automatik",
+    "telegramReportFrequencyLabel": "Kekerapan laporan",
+    "telegramReportHourly": "Setiap jam",
+    "telegramReportDaily": "Setiap hari",
+    "telegramReportWeekly": "Setiap minggu",
+    "logoImage": "Logo / Imej",
+    "editImage": "Edit imej",
+    "customUIBy": "UI tersuai oleh",
+    "unofficial": "Tidak rasmi"
 }

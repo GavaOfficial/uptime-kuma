@@ -1232,5 +1232,20 @@
     "Custom URL": "Pasirinktinis URL",
     "Font Twemoji by Twitter licensed under": "Šriftas „Twemoji“, sukurtas „Twitter“, licencijuotas pagal",
     "showOnlyLastHeartbeat": "Rodyti tik paskutinį heartbeat",
-    "FlashDuty Push URL Placeholder": "Nukopijuokite iš įspėjimų integracijos puslapio"
+    "FlashDuty Push URL Placeholder": "Nukopijuokite iš įspėjimų integracijos puslapio",
+    "telegramBotCommands": "Interaktyvūs boto komandos",
+    "telegramBotCommandsDescription": "Įjunkite komandas, kad valdytumėte stebėjimus iš Telegram.",
+    "telegramBotCommandsList": "Komandos: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Įjungti boto komandas",
+    "telegramBotAutoStart": "Botas automatiškai paleidžiamas, kai pranešimas išsaugomas.",
+    "telegramAutoReports": "Automatinės ataskaitos",
+    "telegramEnableAutoReport": "Įjungti automatines ataskaitas",
+    "telegramReportFrequencyLabel": "Ataskaitos dažnis",
+    "telegramReportHourly": "Kas valandą",
+    "telegramReportDaily": "Kasdien",
+    "telegramReportWeekly": "Kas savaitę",
+    "logoImage": "Logotipas / Vaizdas",
+    "editImage": "Redaguoti vaizdą",
+    "customUIBy": "Pritaikyta sąsaja sukurta",
+    "unofficial": "Neoficialus"
 }

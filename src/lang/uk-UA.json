@@ -1193,5 +1193,20 @@
     "Events cleared successfully": "Події успішно очищено.",
     "No monitors found": "Моніторів не знайдено.",
     "Could not clear events": "Не вдалося очистити події {failed}/{total}",
-    "clearAllEventsMsg": "Ви дійсно хочете видалити всі події?"
+    "clearAllEventsMsg": "Ви дійсно хочете видалити всі події?",
+    "telegramBotCommands": "Інтерактивні команди бота",
+    "telegramBotCommandsDescription": "Увімкнути команди для керування моніторами з Telegram.",
+    "telegramBotCommandsList": "Команди: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Увімкнути команди бота",
+    "telegramBotAutoStart": "Бот автоматично запускається при збереженні сповіщення.",
+    "telegramAutoReports": "Автоматичні звіти",
+    "telegramEnableAutoReport": "Увімкнути автоматичні звіти",
+    "telegramReportFrequencyLabel": "Частота звітів",
+    "telegramReportHourly": "Щогодини",
+    "telegramReportDaily": "Щодня",
+    "telegramReportWeekly": "Щотижня",
+    "logoImage": "Логотип / Зображення",
+    "editImage": "Редагувати зображення",
+    "customUIBy": "Кастомний UI від",
+    "unofficial": "Неофіційний"
 }

@@ -310,5 +310,20 @@
     "setAsDefaultProxyDescription": "కొత్త మానిటర్‌ల కోసం ఈ ప్రాక్సీ డిఫాల్ట్‌గా ప్రారంభించబడుతుంది. మీరు ఇప్పటికీ ప్రతి మానిటర్‌కు విడిగా ప్రాక్సీని నిలిపివేయవచ్చు.",
     "Accept characters:": "అక్షరాలను అంగీకరించండి:",
     "No consecutive dashes": "వరుస డాష్‌లను ఉపయోగించవద్దు",
-    "The slug is already taken. Please choose another slug.": "స్లగ్ ఇప్పటికే తీసుకోబడింది. దయచేసి మరొక స్లగ్‌ని ఎంచుకోండి."
+    "The slug is already taken. Please choose another slug.": "స్లగ్ ఇప్పటికే తీసుకోబడింది. దయచేసి మరొక స్లగ్‌ని ఎంచుకోండి.",
+    "telegramBotCommands": "ఇంటరాక్టివ్ బోట్ కమాండ్స్",
+    "telegramBotCommandsDescription": "టెలిగ్రామ్ నుండి మానిటర్లను నిర్వహించడానికి కమాండ్లను ప్రారంభించండి.",
+    "telegramBotCommandsList": "కమాండ్లు: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "బోట్ కమాండ్లను ప్రారంభించండి",
+    "telegramBotAutoStart": "నోటిఫికేషన్ సేవ్ చేసినప్పుడు బోట్ స్వయంచాలకంగా ప్రారంభమవుతుంది.",
+    "telegramAutoReports": "ఆటోమేటిక్ రిపోర్ట్‌లు",
+    "telegramEnableAutoReport": "ఆటోమేటిక్ రిపోర్ట్‌లను ప్రారంభించండి",
+    "telegramReportFrequencyLabel": "రిపోర్ట్ ఫ్రీక్వెన్సీ",
+    "telegramReportHourly": "గంటకొకసారి",
+    "telegramReportDaily": "రోజూ",
+    "telegramReportWeekly": "వారానికొకసారి",
+    "logoImage": "లోగో / చిత్రం",
+    "editImage": "చిత్రాన్ని సవరించండి",
+    "customUIBy": "కస్టమ్ UI:",
+    "unofficial": "అనధికారిక"
 }

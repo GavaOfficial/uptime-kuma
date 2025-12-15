@@ -734,5 +734,20 @@
     "threadForumPostID": "Tråd- / foruminnlegg-ID",
     "e.g. {discordThreadID}": "f.eks. {discordThreadID}",
     "whatHappensAtForumPost": "Opprett et nytt foruminnlegg. Dette legger IKKE ut meldinger i et eksisterende innlegg. For å poste i et eksisterende innlegg, bruk \"{option}\"",
-    "wayToGetZohoCliqURL": "Du kan lære hvordan du oppretter en webhook-URL {0}."
+    "wayToGetZohoCliqURL": "Du kan lære hvordan du oppretter en webhook-URL {0}.",
+    "telegramBotCommands": "Interaktive Bot-kommandoer",
+    "telegramBotCommandsDescription": "Aktiver kommandoer for å administrere overvåkere fra Telegram.",
+    "telegramBotCommandsList": "Kommandoer: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Aktiver bot-kommandoer",
+    "telegramBotAutoStart": "Boten starter automatisk når varselet lagres.",
+    "telegramAutoReports": "Automatiske rapporter",
+    "telegramEnableAutoReport": "Aktiver automatiske rapporter",
+    "telegramReportFrequencyLabel": "Rapportfrekvens",
+    "telegramReportHourly": "Hver time",
+    "telegramReportDaily": "Daglig",
+    "telegramReportWeekly": "Ukentlig",
+    "logoImage": "Logo / Bilde",
+    "editImage": "Rediger bilde",
+    "customUIBy": "Tilpasset brukergrensesnitt av",
+    "unofficial": "Uoffisiell"
 }

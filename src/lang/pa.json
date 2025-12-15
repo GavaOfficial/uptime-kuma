@@ -3,5 +3,20 @@
     "setupDatabaseChooseDatabase": "ਤੁਸੀਂ ਕਿਹੜਾ ਡੇਟਾਬੇਸ ਵਰਤਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
     "setupDatabaseSQLite": "ਇੱਕ ਸਧਾਰਨ ਡੇਟਾਬੇਸ ਫਾਈਲ, ਛੋਟੇ ਪੈਮਾਨੇ ਦੀਆਂ ਤੈਨਾਤੀਆਂ ਲਈ ਸਿਫਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ। v2.0.0 ਤੋਂ ਪਹਿਲਾਂ, ਅਪਟਾਈਮ ਕੁਮਾ ਨੇ ਡਿਫੌਲਟ ਡੇਟਾਬੇਸ ਵਜੋਂ SQLite ਦੀ ਵਰਤੋਂ ਕੀਤੀ।",
     "setupDatabaseEmbeddedMariaDB": "ਤੁਹਾਨੂੰ ਕੁਝ ਵੀ ਸੈੱਟ ਕਰਨ ਦੀ ਲੋੜ ਨਹੀਂ ਹੈ। ਇਸ ਡੌਕਰ ਚਿੱਤਰ ਨੇ ਤੁਹਾਡੇ ਲਈ ਮਾਰੀਆਡੀਬੀ ਨੂੰ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਏਮਬੇਡ ਅਤੇ ਕੌਂਫਿਗਰ ਕੀਤਾ ਹੈ। ਅਪਟਾਈਮ ਕੁਮਾ ਯੂਨਿਕਸ ਸਾਕਟ ਦੁਆਰਾ ਇਸ ਡੇਟਾਬੇਸ ਨਾਲ ਜੁੜ ਜਾਵੇਗਾ।",
-    "setupDatabaseMariaDB": "ਇੱਕ ਬਾਹਰੀ ਮਾਰੀਆਡੀਬੀ ਡੇਟਾਬੇਸ ਨਾਲ ਜੁੜੋ। ਤੁਹਾਨੂੰ ਡਾਟਾਬੇਸ ਕੁਨੈਕਸ਼ਨ ਜਾਣਕਾਰੀ ਨੂੰ ਸੈੱਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ."
+    "setupDatabaseMariaDB": "ਇੱਕ ਬਾਹਰੀ ਮਾਰੀਆਡੀਬੀ ਡੇਟਾਬੇਸ ਨਾਲ ਜੁੜੋ। ਤੁਹਾਨੂੰ ਡਾਟਾਬੇਸ ਕੁਨੈਕਸ਼ਨ ਜਾਣਕਾਰੀ ਨੂੰ ਸੈੱਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ.",
+    "telegramBotCommands": "ਇੰਟਰੈਕਟਿਵ ਬੋਟ ਕਮਾਂਡਾਂ",
+    "telegramBotCommandsDescription": "ਟੈਲੀਗ੍ਰਾਮ ਤੋਂ ਮਾਨੀਟਰਾਂ ਨੂੰ ਕੰਟਰੋਲ ਕਰਨ ਲਈ ਕਮਾਂਡਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰੋ।",
+    "telegramBotCommandsList": "ਕਮਾਂਡਾਂ: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "ਬੋਟ ਕਮਾਂਡਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰੋ",
+    "telegramBotAutoStart": "ਸੂਚਨਾ ਸੇਵ ਹੋਣ 'ਤੇ ਬੋਟ ਆਟੋਮੈਟਿਕ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ।",
+    "telegramAutoReports": "ਆਟੋਮੈਟਿਕ ਰਿਪੋਰਟਾਂ",
+    "telegramEnableAutoReport": "ਆਟੋਮੈਟਿਕ ਰਿਪੋਰਟਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰੋ",
+    "telegramReportFrequencyLabel": "ਰਿਪੋਰਟ ਦੀ ਬਾਰੰਬਾਰਤਾ",
+    "telegramReportHourly": "ਹਰ ਘੰਟੇ",
+    "telegramReportDaily": "ਰੋਜ਼ਾਨਾ",
+    "telegramReportWeekly": "ਹਫ਼ਤਾਵਾਰੀ",
+    "logoImage": "ਲੋਗੋ / ਚਿੱਤਰ",
+    "editImage": "ਚਿੱਤਰ ਸੰਪਾਦਿਤ ਕਰੋ",
+    "customUIBy": "ਕਸਟਮ UI:",
+    "unofficial": "ਗੈਰ-ਸਰਕਾਰੀ"
 }

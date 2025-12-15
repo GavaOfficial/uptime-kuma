@@ -19,5 +19,20 @@
     "DateTime": "DataHora",
     "Message": "Mensaxe",
     "languageName": "Galego",
-    "Down": "Abaixo"
+    "Down": "Abaixo",
+    "telegramBotCommands": "Comandos de Bot Interactivos",
+    "telegramBotCommandsDescription": "Activa os comandos para xestionar monitores desde Telegram.",
+    "telegramBotCommandsList": "Comandos: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Activar comandos do bot",
+    "telegramBotAutoStart": "O bot iníciase automaticamente cando se garda a notificación.",
+    "telegramAutoReports": "Informes Automáticos",
+    "telegramEnableAutoReport": "Activar informes automáticos",
+    "telegramReportFrequencyLabel": "Frecuencia do informe",
+    "telegramReportHourly": "Cada hora",
+    "telegramReportDaily": "Diariamente",
+    "telegramReportWeekly": "Semanalmente",
+    "logoImage": "Logo / Imaxe",
+    "editImage": "Editar imaxe",
+    "customUIBy": "Interface personalizada por",
+    "unofficial": "Non oficial"
 }

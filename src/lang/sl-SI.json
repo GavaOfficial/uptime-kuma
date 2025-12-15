@@ -628,5 +628,20 @@
     "Days Remaining:": "Preostali dnevi:",
     "Issuer:": "Izdajatelj:",
     "Fingerprint:": "Prstni odtis:",
-    "No Proxy": "Ni proxy-ja"
+    "No Proxy": "Ni proxy-ja",
+    "telegramBotCommands": "Interaktivni ukazi bota",
+    "telegramBotCommandsDescription": "Omogoči ukaze za upravljanje nadzorov iz Telegrama.",
+    "telegramBotCommandsList": "Ukazi: /status, /check, /stats, /help",
+    "telegramEnableBotCommands": "Omogoči ukaze bota",
+    "telegramBotAutoStart": "Bot se samodejno zažene, ko je obvestilo shranjeno.",
+    "telegramAutoReports": "Samodejna poročila",
+    "telegramEnableAutoReport": "Omogoči samodejna poročila",
+    "telegramReportFrequencyLabel": "Pogostost poročil",
+    "telegramReportHourly": "Vsako uro",
+    "telegramReportDaily": "Dnevno",
+    "telegramReportWeekly": "Tedensko",
+    "logoImage": "Logotip / Slika",
+    "editImage": "Uredi sliko",
+    "customUIBy": "Prilagojen vmesnik od",
+    "unofficial": "Neuradno"
 }
