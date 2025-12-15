@@ -596,6 +596,7 @@ export default {
             isHoveringCard: false,
             isClosingEditMode: false,
             isEnteringEditMode: false,
+            windowWidth: typeof window !== 'undefined' ? window.innerWidth : 0,
         };
     },
     computed: {
@@ -820,9 +821,7 @@ export default {
          * @returns {boolean} True if tablet viewport
          */
         isTablet() {
-            if (typeof window === 'undefined') return false;
-            const width = window.innerWidth;
-            return width >= 769 && width <= 1200;
+            return this.windowWidth >= 769 && this.windowWidth <= 1200;
         }
     },
     watch: {
@@ -917,6 +916,10 @@ export default {
         if (this.eyeTrackInterval) {
             clearInterval(this.eyeTrackInterval);
         }
+        // Clean up resize listener
+        if (this.handleResize) {
+            window.removeEventListener('resize', this.handleResize);
+        }
     },
     async mounted() {
         this.slug = this.overrideSlug || this.$route.params.slug;
@@ -930,6 +933,12 @@ export default {
             this.updateEyeDirection();
             this.checkCardHover();
         }, 50);
+
+        // Track window width for responsive behavior
+        this.handleResize = () => {
+            this.windowWidth = window.innerWidth;
+        };
+        window.addEventListener('resize', this.handleResize);
 
         this.getData().then((res) => {
             this.config = res.data.config;
