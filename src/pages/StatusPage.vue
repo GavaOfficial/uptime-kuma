@@ -462,7 +462,7 @@
                     {{ $t("Powered by") }} <a target="_blank" rel="noopener noreferrer" href="https://github.com/louislam/uptime-kuma">{{ $t("Uptime Kuma" ) }}</a>
                 </p>
                 <p class="custom-ui-credit">
-                    {{ $t("customUIBy") }} <a target="_blank" rel="noopener noreferrer" href="https://github.com/GavaOfficial">GavaOfficial</a> ({{ $t("unofficial") }})
+                    {{ $t("customUIBy") }} <a target="_blank" rel="noopener noreferrer" href="https://github.com/GavaOfficial">GavaOfficial</a>
                 </p>
 
                 <div class="refresh-info mb-2">
