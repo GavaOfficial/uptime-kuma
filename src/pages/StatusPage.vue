@@ -376,13 +376,6 @@
             <div v-if="! enableEditMode" class="alert-heading p-2" data-testid="description" v-html="descriptionHTML"></div>
 
             <div v-if="editMode" class="mb-4">
-                <div>
-                    <button class="btn btn-primary btn-add-group me-2" data-testid="add-group-button" @click="addGroup">
-                        <font-awesome-icon icon="plus" />
-                        {{ $t("Add Group") }}
-                    </button>
-                </div>
-
                 <div class="mt-3">
                     <div v-if="sortedMonitorList.length > 0 && loadedData">
                         <label>{{ $t("Add a monitor") }}:</label>
